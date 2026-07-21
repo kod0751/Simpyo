@@ -49,7 +49,7 @@ export function Header({ user }: HeaderProps) {
             </>
           ) : (
             <Button
-              render={<Link href="/login">로그인</Link>}
+              render={<Link href="/auth/login">로그인</Link>}
               className="rounded-full"
             />
           )}
