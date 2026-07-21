@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Bell } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { UserDropdown } from "./Userdropdown";
+import { useAuthModal } from "@/features/auth/model/useAuthModal";
 import type { User } from "@supabase/supabase-js";
 
 type HeaderProps = {
@@ -11,6 +12,8 @@ type HeaderProps = {
 };
 
 export function Header({ user }: HeaderProps) {
+  const open = useAuthModal((state) => state.open);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
@@ -48,10 +51,9 @@ export function Header({ user }: HeaderProps) {
               <UserDropdown user={user} />
             </>
           ) : (
-            <Button
-              render={<Link href="/auth/login">로그인</Link>}
-              className="rounded-full"
-            />
+            <Button onClick={open} className="rounded-full">
+              로그인
+            </Button>
           )}
         </div>
       </div>
