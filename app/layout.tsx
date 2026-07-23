@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
 import { LoginModal } from "@/features/auth/ui/LoginModal";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const nanumSquareNeo = localFont({
+  src: "../public/fonts/NanumSquareNeo-Variable.ttf",
+  variable: "--font-nanum-square-neo",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,11 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang="ko" className={`${nanumSquareNeo.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans">
         <Providers>
           {children}
           <LoginModal />
