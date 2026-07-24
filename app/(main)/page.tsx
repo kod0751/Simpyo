@@ -1,6 +1,8 @@
 import { HeroSection } from "@/widgets/hero-section";
 import { Marquee } from "@/widgets/marquee";
 import { MyPagePreview } from "@/widgets/mypage-preview";
+import { ReviewSection } from "@/widgets/review-section";
+import { CallToAction } from "@/widgets/cta-section";
 
 export default async function Home() {
   return (
@@ -9,6 +11,8 @@ export default async function Home() {
         <HeroSection />
         <Marquee />
         <MyPagePreview />
+        <ReviewSection />
+        <CallToAction />
       </main>
     </div>
   );
