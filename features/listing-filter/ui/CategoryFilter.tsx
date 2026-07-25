@@ -19,7 +19,7 @@ export function CategoryFilter() {
             aria-pressed={active}
             className={`shrink-0 rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${
               active
-                ? "border-brand-900 bg-brand-900 text-white shadow-lg shadow-brand-900/20"
+                ? "border-brand-900 bg-brand-900 text-white"
                 : "border-brand-200 bg-white text-brand-600 hover:border-brand-300 hover:text-brand-900"
             }`}
           >
