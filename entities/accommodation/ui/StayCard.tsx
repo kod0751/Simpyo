@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Star, Heart } from "lucide-react";
-import type { Stay } from "@/lib/stays";
 import Image from "next/image";
+import { Stay } from "../model/types";
 
 export function StayCard({ stay }: { stay: Stay }) {
   const [liked, setLiked] = useState(false);
@@ -12,7 +12,7 @@ export function StayCard({ stay }: { stay: Stay }) {
     <article className="group flex flex-col">
       <div className="relative aspect-4/3 overflow-hidden rounded-3xl shadow-premium">
         <Image
-          src={stay.image || "/placeholder.svg"}
+          src={stay.images[0] || "/placeholder.svg"}
           alt={stay.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -52,7 +52,7 @@ export function StayCard({ stay }: { stay: Stay }) {
             </span>
           </div>
         </div>
-        <p className="text-sm text-brand-500">{stay.location}</p>
+        <p className="text-sm text-brand-500">{stay.address}</p>
 
         <div className="mt-3 flex flex-wrap gap-1.5">
           {stay.tags.map((tag) => (
@@ -67,7 +67,7 @@ export function StayCard({ stay }: { stay: Stay }) {
 
         <div className="mt-4 flex items-baseline gap-1">
           <span className="font-satoshi text-lg font-bold text-brand-950">
-            {stay.price.toLocaleString()}원
+            {stay.price_per_night.toLocaleString()}원
           </span>
           <span className="text-sm text-brand-400">/ 박</span>
         </div>

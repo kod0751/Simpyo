@@ -2,8 +2,8 @@
 
 import { Frown } from "lucide-react";
 import { useListingFilters } from "@/features/listing-filter/model/useListingFilters";
-import type { Stay } from "@/lib/stays";
 import { StayCard } from "@/entities/accommodation/ui/StayCard";
+import { Stay } from "@/entities/accommodation/model/types";
 
 interface ListingGridProps {
   listings: Stay[];
