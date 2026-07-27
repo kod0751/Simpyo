@@ -13,7 +13,7 @@ type HeaderProps = {
 };
 
 const navLinks = [
-  { label: "숙소 둘러보기", href: "/" },
+  { label: "숙소 둘러보기", href: "/listings" },
   { label: "체험", href: "/" },
   { label: "호스트 되기", href: "/" },
 ];
