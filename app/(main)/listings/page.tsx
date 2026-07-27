@@ -13,7 +13,7 @@ interface PageProps {
 
 export default async function ListingsPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const results = getListings({
+  const results = await getListings({
     query: params.q,
     category: params.category,
     sort: params.sort as SortKey,
