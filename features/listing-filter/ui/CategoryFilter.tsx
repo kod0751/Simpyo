@@ -1,4 +1,3 @@
-// features/listing-filter/ui/CategoryFilter.tsx
 "use client";
 
 import { categories } from "@/entities/accommodation/model/categroires";
