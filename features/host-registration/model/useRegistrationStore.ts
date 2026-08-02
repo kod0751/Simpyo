@@ -5,6 +5,7 @@ import {
   type StateStorage,
 } from "zustand/middleware";
 import { initialHostForm, type HostFormData } from "@/lib/host";
+import { MAX_TAGS } from "@/lib/host";
 
 interface RegistrationState {
   form: HostFormData;
@@ -13,6 +14,7 @@ interface RegistrationState {
     value: HostFormData[K],
   ) => void;
   toggleAmenity: (id: string) => void;
+  toggleTag: (id: string) => void;
   reset: () => void;
 }
 
@@ -41,6 +43,21 @@ export const useRegistrationStore = create<RegistrationState>()(
               : [...state.form.amenities, id],
           },
         })),
+
+      toggleTag: (id) =>
+        set((state) => {
+          const isSelected = state.form.tags.includes(id);
+          if (isSelected) {
+            return {
+              form: {
+                ...state.form,
+                tags: state.form.tags.filter((t) => t !== id),
+              },
+            };
+          }
+          if (state.form.tags.length >= MAX_TAGS) return state; // 이미 3개 선택된 상태면 아무 변화 없이 그대로 반환
+          return { form: { ...state.form, tags: [...state.form.tags, id] } };
+        }),
 
       reset: () => set({ form: initialHostForm }),
     }),
