@@ -9,7 +9,7 @@ export function canProceed(stepId: StepId, form: HostFormData): boolean {
     case "basics":
       return true;
     case "amenities":
-      return true;
+      return form.tags.length > 0;
     case "photos":
       return form.photos.length > 0;
     case "describe":
