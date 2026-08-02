@@ -101,6 +101,7 @@ export type HostFormData = {
   beds: number;
   bathrooms: number;
   amenities: string[];
+  tags: string[];
   photos: File[];
   price: number;
   hostName: string;
@@ -118,7 +119,8 @@ export const initialHostForm: HostFormData = {
   beds: 1,
   bathrooms: 1,
   amenities: [],
-  photos: [], // 추가
+  tags: [],
+  photos: [],
   price: 150000,
   hostName: "",
   hostPhone: "",
@@ -168,3 +170,22 @@ export const steps = [
 ] as const;
 
 export type StepId = (typeof steps)[number]["id"];
+
+export type Tag = { id: string; label: string };
+
+export const highlightTags: Tag[] = [
+  { id: "ocean-view", label: "오션뷰" },
+  { id: "forest-view", label: "숲뷰" },
+  { id: "lake-view", label: "호수뷰" },
+  { id: "pool", label: "수영장" },
+  { id: "breakfast", label: "조식 제공" },
+  { id: "spa", label: "스파" },
+  { id: "parking", label: "주차 무료" },
+  { id: "private-house", label: "독채" },
+  { id: "deck", label: "데크" },
+  { id: "city-view", label: "시티뷰" },
+  { id: "fireplace", label: "벽난로" },
+  { id: "hanok", label: "한옥 체험" },
+];
+
+export const MAX_TAGS = 3;
