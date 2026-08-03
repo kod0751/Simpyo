@@ -11,6 +11,11 @@ export function HostInfoStep({
   onHostNameChange,
   onHostPhoneChange,
 }: HostInfoStepProps) {
+  function handlePhoneChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
+    onHostPhoneChange(digitsOnly);
+  }
+
   return (
     <div className="space-y-8">
       <div>
@@ -39,9 +44,11 @@ export function HostInfoStep({
         <input
           id="hostPhone"
           type="tel"
+          inputMode="numeric"
+          maxLength={11}
           value={hostPhone}
-          onChange={(e) => onHostPhoneChange(e.target.value)}
-          placeholder="010-0000-0000"
+          onChange={handlePhoneChange}
+          placeholder="01000000000"
           className="w-full rounded-2xl border border-brand-200 bg-white px-5 py-4 text-base text-brand-900 outline-none transition-colors placeholder:text-brand-300 focus:border-brand-900"
         />
       </div>
