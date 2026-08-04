@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Star, Heart } from "lucide-react";
 import Image from "next/image";
 import { Stay } from "../model/types";
@@ -8,8 +9,14 @@ import { Stay } from "../model/types";
 export function StayCard({ stay }: { stay: Stay }) {
   const [liked, setLiked] = useState(false);
 
+  function handleLikeClick(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    setLiked((v) => !v);
+  }
+
   return (
-    <article className="group flex flex-col">
+    <Link href={`/listings/${stay.id}`} className="group flex flex-col">
       <div className="relative aspect-4/3 overflow-hidden rounded-3xl shadow-premium">
         <Image
           src={stay.images[0] || "/placeholder.svg"}
@@ -25,7 +32,7 @@ export function StayCard({ stay }: { stay: Stay }) {
         )}
         <button
           type="button"
-          onClick={() => setLiked((v) => !v)}
+          onClick={handleLikeClick}
           aria-label={liked ? "관심 숙소 해제" : "관심 숙소 추가"}
           aria-pressed={liked}
           className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-brand-900 backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
@@ -72,6 +79,6 @@ export function StayCard({ stay }: { stay: Stay }) {
           <span className="text-sm text-brand-400">/ 박</span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
