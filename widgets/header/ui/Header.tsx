@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Bell, House, Menu, X } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { UserDropdown } from "./Userdropdown";
@@ -15,12 +16,21 @@ type HeaderProps = {
 const navLinks = [
   { label: "숙소 둘러보기", href: "/listings" },
   { label: "체험", href: "/" },
-  { label: "호스트 되기", href: "/" },
 ];
 
 export function Header({ user }: HeaderProps) {
   const open = useAuthModal((state) => state.open);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const router = useRouter();
+
+  function handleHostClick() {
+    if (user) {
+      router.push("/register/type");
+    } else {
+      open();
+    }
+    setMobileOpen(false);
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur-xl transition-all duration-300">
@@ -48,6 +58,14 @@ export function Header({ user }: HeaderProps) {
                 <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all duration-300 group-hover/link:w-full" />
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={handleHostClick}
+              className="group/link relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              호스트 되기
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all duration-300 group-hover/link:w-full" />
+            </button>
           </nav>
 
           {/* Right side */}
@@ -93,6 +111,13 @@ export function Header({ user }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={handleHostClick}
+              className="rounded-md px-2 py-2 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+            >
+              호스트 되기
+            </button>
             <div className="mt-2 flex items-center gap-3 px-2 pt-2">
               {user ? (
                 <>
