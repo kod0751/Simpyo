@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
 import {
   useSubmitListing,
@@ -12,6 +12,7 @@ export default function CompletePage() {
   const { form, reset } = useRegistrationStore();
   const { mutate, isPending, isSuccess, isError, error } = useSubmitListing();
   const hasSubmittedRef = useRef(false);
+  const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
     if (hasSubmittedRef.current) return;
@@ -23,13 +24,28 @@ export default function CompletePage() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (!user) return;
+      if (!user) {
+        setAuthError(true);
+        return;
+      }
 
       mutate({ form, hostId: user.id }, { onSuccess: () => reset() });
     }
 
     submit();
   }, [form, mutate, reset]);
+
+  if (authError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-6 text-center">
+        <p className="text-brand-500">
+          로그인 정보가 확인되지 않아 등록을 완료할 수 없어요.
+          <br />
+          다시 로그인 후 시도해 주세요.
+        </p>
+      </div>
+    );
+  }
 
   if (isPending) {
     return (
