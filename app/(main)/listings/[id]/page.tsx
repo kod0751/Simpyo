@@ -6,6 +6,7 @@ import { DetailInfo } from "@/widgets/listing-detail/ui/DetailInfo";
 import { AmenitiesSection } from "@/widgets/listing-detail/ui/AmenitiesSection";
 import { BookingSidebar } from "@/widgets/listing-detail/ui/BookingSidebar";
 import { ReviewsSection } from "@/widgets/listing-detail/ui/ReviewsSection";
+import { LocationSection } from "@/widgets/listing-detail/ui/LocationSection";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -38,6 +39,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
       </main>
 
       <ReviewsSection rating={listing.rating} reviewCount={listing.reviews} />
+      <LocationSection region={listing.region} address={listing.address} />
     </>
   );
 }
