@@ -8,6 +8,7 @@ import {
   Images,
 } from "lucide-react";
 import type { Stay } from "@/entities/accommodation/model/types";
+import { DeleteListingButton } from "@/features/manage-listing/ui/DeleteListingButton";
 
 interface HostDashboardProps {
   listings: Stay[];
@@ -122,70 +123,83 @@ export function HostDashboard({ listings }: HostDashboardProps) {
                   ) : (
                     <div className="space-y-4">
                       {listings.map((listing) => (
-                        <Link
+                        <div
                           key={listing.id}
-                          href={`/listings/${listing.id}`}
-                          className="group flex cursor-pointer flex-col items-center gap-4 rounded-xl border border-brand-200 p-4 transition-colors hover:border-brand-400 sm:flex-row"
+                          className="group flex flex-col items-center gap-4 rounded-xl border border-brand-200 p-4 transition-colors hover:border-brand-400 sm:flex-row"
                         >
-                          {listing.images[0] ? (
-                            <img
-                              src={listing.images[0]}
-                              alt={listing.name}
-                              className="h-24 w-full rounded-lg object-cover sm:w-24"
-                            />
-                          ) : (
-                            <div className="flex h-24 w-full items-center justify-center rounded-lg bg-brand-100 text-brand-400 sm:w-24">
-                              <Images size={28} />
-                            </div>
-                          )}
-                          <div className="w-full flex-1">
-                            <div className="mb-1 flex items-start justify-between gap-2">
-                              <h4 className="font-bold text-brand-900 transition-colors group-hover:text-brand-600">
-                                {listing.name}
-                              </h4>
-                              {listing.is_active ? (
-                                <span className="shrink-0 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700">
-                                  운영중
-                                </span>
-                              ) : (
-                                <span className="shrink-0 rounded-full border border-brand-200 bg-brand-100 px-2.5 py-1 text-[10px] font-bold text-brand-500">
-                                  비활성
-                                </span>
-                              )}
-                            </div>
-                            <p className="mb-3 text-xs text-brand-500">
-                              {listing.region} · 최대 {listing.max_guests}인
-                            </p>
-                            <div className="flex gap-4 text-sm font-medium">
-                              <div className="flex flex-col">
-                                <span className="text-[10px] text-brand-400 uppercase">
-                                  1박 요금
-                                </span>
-                                <span className="text-brand-900">
-                                  {listing.price_per_night.toLocaleString()}원
-                                </span>
+                          <Link
+                            href={`/listings/${listing.id}`}
+                            className="flex w-full flex-1 flex-col items-center gap-4 sm:flex-row"
+                          >
+                            {listing.images[0] ? (
+                              <img
+                                src={listing.images[0]}
+                                alt={listing.name}
+                                className="h-24 w-full shrink-0 rounded-lg object-cover sm:w-24"
+                              />
+                            ) : (
+                              <div className="flex h-24 w-full shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand-400 sm:w-24">
+                                <Images size={28} />
                               </div>
-                              <div className="w-px bg-brand-200" />
-                              <div className="flex flex-col">
-                                <span className="text-[10px] text-brand-400 uppercase">
-                                  평점
-                                </span>
-                                <span className="flex items-center gap-1 text-brand-900">
-                                  <Star
-                                    size={12}
-                                    className="fill-brand-900 text-brand-900"
-                                  />{" "}
-                                  {listing.rating.toFixed(2)}
-                                </span>
+                            )}
+                            <div className="w-full flex-1">
+                              <div className="mb-1 flex items-start justify-between gap-2">
+                                <h4 className="font-bold text-brand-900 transition-colors group-hover:text-brand-600">
+                                  {listing.name}
+                                </h4>
+                                {listing.is_active ? (
+                                  <span className="shrink-0 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700">
+                                    운영중
+                                  </span>
+                                ) : (
+                                  <span className="shrink-0 rounded-full border border-brand-200 bg-brand-100 px-2.5 py-1 text-[10px] font-bold text-brand-500">
+                                    비활성
+                                  </span>
+                                )}
+                              </div>
+                              <p className="mb-3 text-xs text-brand-500">
+                                {listing.region} · 최대 {listing.max_guests}인
+                              </p>
+                              <div className="flex gap-4 text-sm font-medium">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] text-brand-400 uppercase">
+                                    1박 요금
+                                  </span>
+                                  <span className=" text-brand-900 ">
+                                    {listing.price_per_night.toLocaleString()}원
+                                  </span>
+                                </div>
+                                <div className="w-px bg-brand-200" />
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] text-brand-400 uppercase">
+                                    평점
+                                  </span>
+                                  <span className="flex items-center gap-1 text-brand-900">
+                                    <Star
+                                      size={12}
+                                      className="fill-brand-900 text-brand-900"
+                                    />{" "}
+                                    {listing.rating.toFixed(2)}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="w-full sm:w-auto sm:border-l sm:border-brand-200 sm:pl-4">
-                            <span className="block w-full rounded-lg bg-brand-100 px-4 py-2 text-center text-xs font-bold text-brand-900 sm:w-auto">
+                          </Link>
+
+                          <div className="flex w-full items-center gap-2 sm:w-auto sm:border-l sm:border-brand-200 sm:pl-4">
+                            <Link
+                              href={`/listings/${listing.id}`}
+                              className="flex-1 rounded-lg bg-brand-100 px-4 py-2 text-center text-xs font-bold text-brand-900 transition-colors hover:bg-brand-200 sm:flex-none"
+                            >
                               관리하기
-                            </span>
+                            </Link>
+                            <DeleteListingButton
+                              id={listing.id}
+                              name={listing.name}
+                              images={listing.images}
+                            />
                           </div>
-                        </Link>
+                        </div>
                       ))}
                     </div>
                   )}
