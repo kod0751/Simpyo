@@ -42,7 +42,7 @@ export function HostDashboard({ listings }: HostDashboardProps) {
 
         <div className="grid gap-8 lg:grid-cols-12">
           {/* TODO: 예약/결제 스키마 도입 전까지 수익 정보는 하드코딩 유지 */}
-          <div className="flex flex-col gap-6 lg:col-span-4">
+          <div className="flex flex-col gap-6 lg:sticky lg:top-32 lg:col-span-4 lg:self-start">
             <div className="premium-card-outer flex-1">
               <div
                 className="premium-card-inner flex h-full flex-col justify-between p-8 text-white"
