@@ -1,8 +1,10 @@
-import { HeroSection } from "@/widgets/hero-section";
-import { Marquee } from "@/widgets/marquee";
-import { MyPagePreview } from "@/widgets/mypage-preview";
-import { ReviewSection } from "@/widgets/review-section";
-import { CallToAction } from "@/widgets/cta-section";
+import {
+  HeroSection,
+  Marquee,
+  MyPagePreview,
+  ReviewSection,
+  CTAction,
+} from "@/widgets/home";
 
 export default async function Home() {
   return (
@@ -12,7 +14,7 @@ export default async function Home() {
         <Marquee />
         <MyPagePreview />
         <ReviewSection />
-        <CallToAction />
+        <CTAction />
       </main>
     </div>
   );

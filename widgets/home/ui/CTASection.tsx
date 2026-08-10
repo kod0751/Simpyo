@@ -1,6 +1,6 @@
 import { ArrowRight, HousePlus, Phone } from "lucide-react";
 
-export function CallToAction() {
+export function CTAction() {
   return (
     <section className="relative overflow-hidden bg-brand-50 py-32">
       <div className="pointer-events-none absolute top-1/2 left-1/2 h-150 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[80px]" />
