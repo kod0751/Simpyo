@@ -1,7 +1,6 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { BasicsStep } from "@/features/host-registration/step-basics";
+import { BasicsStep, useRegistrationStore } from "@/features/host-registration";
 
 export default function BasicsPage() {
   const { form, update } = useRegistrationStore();

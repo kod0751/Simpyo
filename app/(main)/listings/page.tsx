@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { getListings } from "@/entities/accommodation/api/getListings";
-import { ListingGrid } from "@/widgets/listing-list/ui/ListingGrid";
 import { SearchInput } from "@/features/listing-filter/ui/SearchInput";
 import { SortSelect } from "@/features/listing-filter/ui/SortSelect";
 import { CategoryFilter } from "@/features/listing-filter/ui/CategoryFilter";
 import type { SortKey } from "@/features/listing-filter/model/useListingFilters";
 import { MapPin } from "lucide-react";
+import { ListingGrid } from "@/widgets/listing-list";
 
 interface PageProps {
   searchParams: Promise<{ q?: string; category?: string; sort?: string }>;
@@ -22,7 +22,7 @@ export default async function ListingsPage({ searchParams }: PageProps) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold tracking-[0.1em] text-brand-700 uppercase">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold tracking-widest text-brand-700 uppercase">
           <MapPin size={14} className="text-accent-500" />
           전체 숙소
         </div>

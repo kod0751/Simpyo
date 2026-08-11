@@ -1,12 +1,14 @@
 import { redirect } from "next/navigation";
 import { getMyProfile } from "@/entities/profile/api/getMyProfile";
 import { getMyListings } from "@/entities/accommodation/api/getMyListings";
-import { ProfileHeader } from "@/widgets/mypage/ui/ProfileHeader";
-import { QuickStats } from "@/widgets/mypage/ui/QuickStats";
-import { Reservations } from "@/widgets/mypage/ui/Reservations";
-import { Schedule } from "@/widgets/mypage/ui/Schedule";
-import { HostDashboard } from "@/widgets/mypage/ui/HostDashboard";
-import { SupportCta } from "@/widgets/mypage/ui/SupportCta";
+import {
+  ProfileHeader,
+  QuickStats,
+  Reservations,
+  Schedule,
+  HostDashboard,
+  SupportCta,
+} from "@/widgets/mypage";
 
 export const metadata = {
   title: "쉼터 | 마이페이지",

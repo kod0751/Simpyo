@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import {
-  useSubmitListing,
-  RegistrationSuccess,
-} from "@/features/host-registration/submit-listing";
 import { createClient } from "@/lib/supabase/client";
+import {
+  RegistrationSuccess,
+  useRegistrationStore,
+  useSubmitListing,
+} from "@/features/host-registration";
 
 export default function CompletePage() {
   const { form, reset } = useRegistrationStore();

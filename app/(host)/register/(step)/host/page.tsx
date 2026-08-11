@@ -1,7 +1,9 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { HostInfoStep } from "@/features/host-registration/step-host";
+import {
+  HostInfoStep,
+  useRegistrationStore,
+} from "@/features/host-registration";
 
 export default function HostPage() {
   const { form, update } = useRegistrationStore();

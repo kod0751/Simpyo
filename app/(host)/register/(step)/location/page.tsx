@@ -1,7 +1,9 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { LocationStep } from "@/features/host-registration/step-location";
+import {
+  LocationStep,
+  useRegistrationStore,
+} from "@/features/host-registration";
 
 export default function LocationPage() {
   const { form, update } = useRegistrationStore();

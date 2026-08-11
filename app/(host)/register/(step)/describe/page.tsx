@@ -1,7 +1,10 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { DescribeStep } from "@/features/host-registration/step-describe";
+import {
+  DescribeStep,
+  useRegistrationStore,
+} from "@/features/host-registration";
+
 export default function DescribePage() {
   const { form, update } = useRegistrationStore();
 

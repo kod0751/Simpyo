@@ -1,7 +1,6 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { PhotosStep } from "@/features/host-registration/step-photos";
+import { PhotosStep, useRegistrationStore } from "@/features/host-registration";
 
 export default function PhotosPage() {
   const { form, update } = useRegistrationStore();

@@ -1,7 +1,9 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { PropertyTypeStep } from "@/features/host-registration/step-type";
+import {
+  PropertyTypeStep,
+  useRegistrationStore,
+} from "@/features/host-registration";
 
 export default function TypePage() {
   const { form, update } = useRegistrationStore();
