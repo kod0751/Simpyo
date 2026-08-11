@@ -1,7 +1,6 @@
 "use client";
 
-import { useRegistrationStore } from "@/features/host-registration/model/useRegistrationStore";
-import { PriceStep } from "@/features/host-registration/step-price";
+import { PriceStep, useRegistrationStore } from "@/features/host-registration";
 
 export default function PricePage() {
   const { form, update } = useRegistrationStore();
