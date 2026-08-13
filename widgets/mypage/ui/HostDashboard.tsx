@@ -188,7 +188,7 @@ export function HostDashboard({ listings }: HostDashboardProps) {
 
                           <div className="flex w-full items-center gap-2 sm:w-auto sm:border-l sm:border-brand-200 sm:pl-4">
                             <Link
-                              href={`/listings/${listing.id}`}
+                              href={`/mypage/listings/${listing.id}/edit`}
                               className="flex-1 rounded-lg bg-brand-100 px-4 py-2 text-center text-xs font-bold text-brand-900 transition-colors hover:bg-brand-200 sm:flex-none"
                             >
                               관리하기
