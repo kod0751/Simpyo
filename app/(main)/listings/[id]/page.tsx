@@ -33,7 +33,12 @@ export default async function ListingDetailPage({ params }: PageProps) {
               <AmenitiesSection amenities={listing.amenities} />
             </div>
 
-            <BookingSidebar pricePerNight={listing.price_per_night} />
+            <BookingSidebar
+              listingId={listing.id}
+              hostId={listing.host_id}
+              pricePerNight={listing.price_per_night}
+              maxGuests={listing.max_guests}
+            />
           </div>
         </div>
       </main>
