@@ -1,5 +1,6 @@
-import { Star, Settings, Bell } from "lucide-react";
+import { Star, Settings } from "lucide-react";
 import type { Profile } from "@/entities/profile/model/types";
+import { NotificationBell } from "@/features/notifications/model/ui/NotificationBell";
 
 interface ProfileHeaderProps {
   profile: Profile;
@@ -12,7 +13,7 @@ function formatJoinDate(dateString: string) {
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
   return (
-    <section className="relative overflow-hidden pt-40 pb-16">
+    <section className="relative pt-40 pb-16">
       <div className="absolute top-0 right-0 -z-10 h-[60vh] w-[30vw] rounded-bl-[120px] bg-brand-200/40 blur-2xl" />
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:items-end">
@@ -53,14 +54,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
             >
               <Settings size={20} />
             </button>
-            <button
-              type="button"
-              aria-label="알림"
-              className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-brand-200 bg-white text-brand-900 shadow-sm transition-all hover:scale-105 hover:bg-brand-50 active:scale-95"
-            >
-              <Bell size={20} />
-              <span className="absolute top-3 right-3 h-2 w-2 rounded-full border-2 border-white bg-red-500" />
-            </button>
+            <NotificationBell userId={profile.id} />
           </div>
         </div>
       </div>
