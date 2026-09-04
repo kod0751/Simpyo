@@ -10,9 +10,9 @@ export async function getMyBookings(
     .from("bookings")
     .select(
       `
-      id, listing_id, guest_id, check_in, check_out, guests_count, total_price, status, created_at, updated_at,
-      listing:listings (id, name, images, address, region)
-    `,
+    id, listing_id, guest_id, check_in, check_out, guests_count, total_price, status, created_at, updated_at,
+    listing:listings (id, name, images, address, region, host_name)
+  `,
     )
     .eq("guest_id", guestId)
     .order("check_in", { ascending: true });

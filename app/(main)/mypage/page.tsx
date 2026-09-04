@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getMyProfile } from "@/entities/profile/api/getMyProfile";
 import { getMyListings } from "@/entities/accommodation/api/getMyListings";
+import { getMyBookings } from "@/entities/booking/api/getMyBookings";
 import {
   ProfileHeader,
   QuickStats,
@@ -23,14 +24,17 @@ export default async function MyPage() {
     redirect("/");
   }
 
-  const listings = await getMyListings(profile.id);
+  const [listings, bookings] = await Promise.all([
+    getMyListings(profile.id),
+    getMyBookings(profile.id),
+  ]);
 
   return (
     <main className="min-h-screen bg-brand-50 text-brand-900">
       <ProfileHeader profile={profile} />
       <QuickStats />
-      <Reservations />
-      <Schedule />
+      <Reservations bookings={bookings} />
+      <Schedule bookings={bookings} />
       <HostDashboard listings={listings} />
       <SupportCta />
     </main>
