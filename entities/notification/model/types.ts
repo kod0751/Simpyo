@@ -8,4 +8,5 @@ export type Notification = {
   message: string;
   is_read: boolean;
   created_at: string;
+  listing_id: string | null;
 };
