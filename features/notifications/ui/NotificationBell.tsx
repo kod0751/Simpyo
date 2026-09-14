@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Bell, CalendarCheck } from "lucide-react";
+import Link from "next/link";
+import { Bell, CalendarCheck, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getUnreadCountClient } from "@/entities/notification/api/getUnreadCountClient";
 import { getMyNotificationsClient } from "@/entities/notification/api/getMyNotificationsClient";
-import { useMarkAllAsRead, useMarkAsRead } from "../useNotifications";
+import {
+  useDeleteNotification,
+  useMarkAllAsRead,
+  useMarkAsRead,
+} from "../model/useNotifications";
 
 interface NotificationBellProps {
   userId: string;
@@ -38,6 +43,7 @@ export function NotificationBell({ userId }: NotificationBellProps) {
 
   const { mutate: markRead } = useMarkAsRead();
   const { mutate: markAllRead } = useMarkAllAsRead(userId);
+  const { mutate: deleteOne } = useDeleteNotification();
 
   return (
     <div className="relative">
@@ -76,29 +82,67 @@ export function NotificationBell({ userId }: NotificationBellProps) {
                 <p className="text-xs text-brand-400">새 알림이 없어요</p>
               </div>
             ) : (
-              <div className="max-h-80 space-y-1.5 overflow-y-auto">
-                {notifications.map((n) => (
-                  <button
-                    key={n.id}
-                    type="button"
-                    onClick={() => !n.is_read && markRead(n.id)}
-                    className={`flex w-full cursor-pointer flex-col gap-1 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-brand-50 ${
-                      n.is_read ? "" : "bg-brand-50/60"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {!n.is_read && (
-                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
+              <div className="max-h-80 space-y-1.5 overflow-y-auto p-1">
+                {notifications.map((n) => {
+                  const content = (
+                    <>
+                      <div className="flex items-center gap-2">
+                        {!n.is_read && (
+                          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
+                        )}
+                        <p className="text-sm font-medium text-brand-800">
+                          {n.message}
+                        </p>
+                      </div>
+                      <span className="text-xs text-brand-400">
+                        {timeAgo(n.created_at)}
+                      </span>
+                    </>
+                  );
+
+                  return (
+                    <div
+                      key={n.id}
+                      className={`group relative flex items-start rounded-xl transition-colors hover:bg-brand-50 ${
+                        n.is_read ? "" : "bg-brand-50/60"
+                      }`}
+                    >
+                      {n.listing_id ? (
+                        <Link
+                          href={`/listings/${n.listing_id}`}
+                          onClick={() => {
+                            if (!n.is_read) markRead(n.id);
+                            setOpen(false);
+                          }}
+                          className="flex flex-1 cursor-pointer flex-col gap-1 px-3 py-2.5 text-left"
+                        >
+                          {content}
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => !n.is_read && markRead(n.id)}
+                          className="flex flex-1 cursor-pointer flex-col gap-1 px-3 py-2.5 text-left"
+                        >
+                          {content}
+                        </button>
                       )}
-                      <p className="text-sm font-medium text-brand-800">
-                        {n.message}
-                      </p>
+
+                      <button
+                        type="button"
+                        aria-label="알림 삭제"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          deleteOne(n.id);
+                        }}
+                        className="mt-2 mr-2 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-brand-300 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-brand-100 hover:text-brand-600"
+                      >
+                        <X size={14} />
+                      </button>
                     </div>
-                    <span className="text-xs text-brand-400">
-                      {timeAgo(n.created_at)}
-                    </span>
-                  </button>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

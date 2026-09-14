@@ -1,6 +1,6 @@
 import { Star, Settings } from "lucide-react";
 import type { Profile } from "@/entities/profile/model/types";
-import { NotificationBell } from "@/features/notifications/model/ui/NotificationBell";
+import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
 
 interface ProfileHeaderProps {
   profile: Profile;
