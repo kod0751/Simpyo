@@ -3,6 +3,7 @@ import {
   markAsRead,
   markAllAsRead,
 } from "@/entities/notification/api/markAsRead";
+import { deleteNotification } from "@/entities/notification/api/deleteNotification";
 
 export function useMarkAsRead() {
   const queryClient = useQueryClient();
@@ -20,6 +21,17 @@ export function useMarkAllAsRead(userId: string) {
 
   return useMutation({
     mutationFn: () => markAllAsRead(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+}
+
+export function useDeleteNotification() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (notificationId: string) => deleteNotification(notificationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
