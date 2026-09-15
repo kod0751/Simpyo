@@ -14,6 +14,7 @@ import {
 
 interface NotificationBellProps {
   userId: string;
+  buttonClassName?: string;
 }
 
 function timeAgo(dateStr: string) {
@@ -26,7 +27,10 @@ function timeAgo(dateStr: string) {
   return `${Math.floor(diffHour / 24)}일 전`;
 }
 
-export function NotificationBell({ userId }: NotificationBellProps) {
+export function NotificationBell({
+  userId,
+  buttonClassName,
+}: NotificationBellProps) {
   const [open, setOpen] = useState(false);
 
   const { data: unreadCount = 0 } = useQuery({
@@ -51,7 +55,10 @@ export function NotificationBell({ userId }: NotificationBellProps) {
         type="button"
         aria-label="알림"
         onClick={() => setOpen((v) => !v)}
-        className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-brand-200 bg-white text-brand-900 shadow-sm transition-all hover:scale-105 hover:bg-brand-50 active:scale-95"
+        className={
+          buttonClassName ??
+          "relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-brand-200 bg-white text-brand-900 shadow-sm transition-all hover:scale-105 hover:bg-brand-50 active:scale-95"
+        }
       >
         <Bell size={20} />
         {unreadCount > 0 && (

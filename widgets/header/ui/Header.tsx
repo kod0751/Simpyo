@@ -8,6 +8,7 @@ import { Button } from "@/shared/components/ui/button";
 import { UserDropdown } from "./Userdropdown";
 import { useAuthModal } from "@/features/auth/model/useAuthModal";
 import type { User } from "@supabase/supabase-js";
+import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
 
 type HeaderProps = {
   user: User | null;
@@ -72,7 +73,10 @@ export function Header({ user }: HeaderProps) {
           <div className="flex items-center gap-3">
             {user ? (
               <div className="hidden items-center gap-3 sm:flex">
-                <Bell className="text-muted-foreground" />
+                <NotificationBell
+                  userId={user.id}
+                  buttonClassName="relative flex h-10 w-10 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-primary"
+                />
                 <UserDropdown user={user} />
               </div>
             ) : (
@@ -121,7 +125,10 @@ export function Header({ user }: HeaderProps) {
             <div className="mt-2 flex items-center gap-3 px-2 pt-2">
               {user ? (
                 <>
-                  <Bell className="text-muted-foreground" />
+                  <NotificationBell
+                    userId={user.id}
+                    buttonClassName="relative flex h-10 w-10 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-primary"
+                  />
                   <UserDropdown user={user} />
                 </>
               ) : (
