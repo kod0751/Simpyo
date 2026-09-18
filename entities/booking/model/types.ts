@@ -21,5 +21,6 @@ export type BookingWithListing = Booking & {
     address: string;
     region: string;
     host_name: string | null;
+    host_id: string;
   };
 };
