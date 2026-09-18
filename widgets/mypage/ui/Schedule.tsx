@@ -1,5 +1,7 @@
 import { CalendarPlus, CalendarDays, MapPin, CalendarX } from "lucide-react";
 import type { BookingWithListing } from "@/entities/booking/model/types";
+import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
+import { isCancellable } from "@/entities/booking/lib/isCancellable";
 
 interface ScheduleProps {
   bookings: BookingWithListing[];
@@ -58,7 +60,10 @@ export function Schedule({ bookings }: ScheduleProps) {
               ) : (
                 <div className="relative space-y-12 border-l border-brand-200 pb-4 pl-6">
                   {sorted.map((booking) => {
-                    const isUpcoming = new Date(booking.check_out) >= today;
+                    const isCancelled = booking.status === "cancelled";
+                    const isUpcoming =
+                      !isCancelled && new Date(booking.check_out) >= today;
+
                     return (
                       <div key={booking.id} className="group relative">
                         <div
@@ -79,7 +84,11 @@ export function Schedule({ bookings }: ScheduleProps) {
                             <span className="font-satoshi mb-1 block text-xl font-bold text-brand-400">
                               {formatMonthYear(booking.check_in)}
                             </span>
-                            {isUpcoming ? (
+                            {isCancelled ? (
+                              <span className="rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-500">
+                                취소됨
+                              </span>
+                            ) : isUpcoming ? (
                               <span className="rounded-md bg-brand-100 px-2 py-1 text-xs font-semibold text-brand-500">
                                 예정됨
                               </span>
@@ -102,6 +111,15 @@ export function Schedule({ bookings }: ScheduleProps) {
                                   booking.check_out,
                                 )}
                               </div>
+                              {isCancellable(booking.check_in) && (
+                                <CancelBookingButton
+                                  bookingId={booking.id}
+                                  hostId={booking.listing.host_id}
+                                  listingId={booking.listing_id}
+                                  listingName={booking.listing.name}
+                                  className="cursor-pointer text-xs font-semibold text-brand-500 underline underline-offset-4 hover:text-red-600"
+                                />
+                              )}
                               <h4 className="mb-2 text-lg font-bold text-brand-900">
                                 {booking.listing.name}
                               </h4>

@@ -2,6 +2,8 @@ import { ChevronRight, PenLine, ArrowRight, CalendarX } from "lucide-react";
 import Link from "next/link";
 import type { BookingWithListing } from "@/entities/booking/model/types";
 import Image from "next/image";
+import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
+import { isCancellable } from "@/entities/booking/lib/isCancellable";
 
 interface ReservationsProps {
   bookings: BookingWithListing[];
@@ -135,6 +137,15 @@ export function Reservations({ bookings }: ReservationsProps) {
                       >
                         상세 보기
                       </Link>
+                      {isCancellable(upcoming.check_in) && (
+                        <CancelBookingButton
+                          bookingId={upcoming.id}
+                          hostId={upcoming.listing.host_id}
+                          listingId={upcoming.listing_id}
+                          listingName={upcoming.listing.name}
+                          className="flex-1 rounded-xl border border-brand-200 bg-white py-3 text-sm font-bold text-brand-900 transition-all hover:bg-brand-50 active:scale-[0.98]"
+                        />
+                      )}
                     </div>
                   </div>
                 </>
