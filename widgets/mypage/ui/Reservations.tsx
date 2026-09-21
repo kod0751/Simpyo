@@ -54,7 +54,12 @@ export function Reservations({ bookings }: ReservationsProps) {
             type="button"
             className="flex cursor-pointer items-center gap-1 text-sm font-semibold text-brand-900 transition-opacity hover:opacity-70"
           >
-            전체보기 <ChevronRight size={16} />
+            <Link
+              href="/mypage/bookings"
+              className="flex items-center gap-1 text-sm font-semibold text-brand-900 transition-opacity hover:opacity-70"
+            >
+              전체보기 <ChevronRight size={16} />
+            </Link>
           </button>
         </div>
 
