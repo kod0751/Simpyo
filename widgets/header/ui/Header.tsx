@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, House, Menu, X } from "lucide-react";
+import { House, Menu, X } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { UserDropdown } from "./Userdropdown";
 import { useAuthModal } from "@/features/auth/model/useAuthModal";
