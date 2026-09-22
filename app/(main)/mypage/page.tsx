@@ -10,6 +10,7 @@ import {
   HostDashboard,
   SupportCta,
 } from "@/widgets/mypage";
+import { getHostRevenue } from "@/entities/booking/api/getHostRevenue";
 
 export const metadata = {
   title: "쉼터 | 마이페이지",
@@ -24,18 +25,19 @@ export default async function MyPage() {
     redirect("/");
   }
 
-  const [listings, bookings] = await Promise.all([
+  const now = new Date();
+  const [listings, bookings, revenue] = await Promise.all([
     getMyListings(profile.id),
     getMyBookings(profile.id),
+    getHostRevenue(profile.id, now.getFullYear(), now.getMonth() + 1),
   ]);
-
   return (
     <main className="min-h-screen bg-brand-50 text-brand-900">
       <ProfileHeader profile={profile} />
       <QuickStats />
       <Reservations bookings={bookings} />
       <Schedule bookings={bookings} />
-      <HostDashboard listings={listings} />
+      <HostDashboard listings={listings} revenue={revenue} />
       <SupportCta />
     </main>
   );

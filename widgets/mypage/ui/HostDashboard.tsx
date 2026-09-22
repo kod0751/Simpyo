@@ -1,20 +1,18 @@
 import Link from "next/link";
-import {
-  KeyRound,
-  HousePlus,
-  Wallet,
-  TrendingUp,
-  Star,
-  Images,
-} from "lucide-react";
+import { KeyRound, HousePlus, Wallet, Star, Images } from "lucide-react";
 import type { Stay } from "@/entities/accommodation/model/types";
 import { DeleteListingButton } from "@/features/manage-listing/ui/DeleteListingButton";
+import Image from "next/image";
+import type { MonthlyRevenue } from "@/entities/booking/api/getHostRevenue";
 
 interface HostDashboardProps {
   listings: Stay[];
+  revenue: MonthlyRevenue;
 }
 
-export function HostDashboard({ listings }: HostDashboardProps) {
+export function HostDashboard({ listings, revenue }: HostDashboardProps) {
+  const currentMonth = new Date().getMonth() + 1;
+
   return (
     <section className="relative bg-white py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -41,7 +39,6 @@ export function HostDashboard({ listings }: HostDashboardProps) {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-12">
-          {/* TODO: 예약/결제 스키마 도입 전까지 수익 정보는 하드코딩 유지 */}
           <div className="flex flex-col gap-6 lg:sticky lg:top-32 lg:col-span-4 lg:self-start">
             <div className="premium-card-outer flex-1">
               <div
@@ -51,18 +48,17 @@ export function HostDashboard({ listings }: HostDashboardProps) {
                 <div>
                   <div className="mb-6 flex items-center justify-between">
                     <span className="text-sm font-medium text-brand-300">
-                      11월 예상 수익
+                      {currentMonth}월 예상 수익
                     </span>
                     <Wallet size={24} className="text-brand-400" />
                   </div>
                   <div className="font-satoshi mb-2 text-4xl font-bold md:text-5xl">
-                    ₩3,420,000
+                    ₩{revenue.totalRevenue.toLocaleString()}
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <span className="flex items-center gap-1 rounded bg-white/10 px-2 py-0.5 font-bold text-white">
-                      <TrendingUp size={14} /> +12%
+                    <span className="text-brand-400">
+                      이번 달 예약 {revenue.bookingCount}건
                     </span>
-                    <span className="text-brand-400">지난달 대비</span>
                   </div>
                 </div>
 
