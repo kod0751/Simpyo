@@ -4,13 +4,51 @@ import { Frown } from "lucide-react";
 import { useListingFilters } from "@/features/listing-filter/model/useListingFilters";
 import { StayCard } from "@/entities/accommodation/ui/StayCard";
 import { Stay } from "@/entities/accommodation/model/types";
+import { useAuthModal } from "@/features/auth/model/useAuthModal";
+import { useToggleWishlist } from "@/features/wishlist/model/useToggleWishlist";
+import { useState } from "react";
 
 interface ListingGridProps {
   listings: Stay[];
+  userId?: string | null;
+  initialWishlistIds?: string[];
 }
 
-export function ListingGrid({ listings }: ListingGridProps) {
+export function ListingGrid({
+  listings,
+  userId = null,
+  initialWishlistIds = [],
+}: ListingGridProps) {
   const { updateFilters } = useListingFilters();
+  const openAuthModal = useAuthModal((state) => state.open);
+  const { mutate } = useToggleWishlist();
+  const [wishlistIds, setWishlistIds] = useState<Set<string>>(
+    () => new Set(initialWishlistIds),
+  );
+
+  function setLiked(listingId: string, liked: boolean) {
+    setWishlistIds((prev) => {
+      const next = new Set(prev);
+      if (liked) next.add(listingId);
+      else next.delete(listingId);
+      return next;
+    });
+  }
+
+  function handleToggleLike(stay: Stay) {
+    if (!userId) {
+      openAuthModal();
+      return;
+    }
+
+    const nextLiked = !wishlistIds.has(stay.id);
+    setLiked(stay.id, nextLiked); // 서버 응답 전에 화면부터 반영
+
+    mutate(
+      { userId, listingId: stay.id, liked: nextLiked },
+      { onError: () => setLiked(stay.id, !nextLiked) }, // 실패하면 되돌림
+    );
+  }
 
   return (
     <>
@@ -25,7 +63,12 @@ export function ListingGrid({ listings }: ListingGridProps) {
       {listings.length > 0 ? (
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {listings.map((stay) => (
-            <StayCard key={stay.id} stay={stay} />
+            <StayCard
+              key={stay.id}
+              stay={stay}
+              liked={wishlistIds.has(stay.id)}
+              onToggleLike={handleToggleLike}
+            />
           ))}
         </div>
       ) : (

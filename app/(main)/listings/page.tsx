@@ -6,6 +6,8 @@ import { CategoryFilter } from "@/features/listing-filter/ui/CategoryFilter";
 import type { SortKey } from "@/features/listing-filter/model/useListingFilters";
 import { MapPin } from "lucide-react";
 import { ListingGrid } from "@/widgets/listing-list";
+import { createClient } from "@/lib/supabase/server";
+import { getMyWishlistIds } from "@/entities/wishlist/api/getMyWishlistIds";
 
 interface PageProps {
   searchParams: Promise<{ q?: string; category?: string; sort?: string }>;
@@ -13,11 +15,23 @@ interface PageProps {
 
 export default async function ListingsPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const results = await getListings({
-    query: params.q,
-    category: params.category,
-    sort: params.sort as SortKey,
-  });
+  const supabase = await createClient();
+
+  const [
+    results,
+    {
+      data: { user },
+    },
+  ] = await Promise.all([
+    getListings({
+      query: params.q,
+      category: params.category,
+      sort: params.sort as SortKey,
+    }),
+    supabase.auth.getUser(),
+  ]);
+
+  const wishlistIds = user ? await getMyWishlistIds(user.id) : [];
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
@@ -43,7 +57,11 @@ export default async function ListingsPage({ searchParams }: PageProps) {
       </Suspense>
 
       <Suspense fallback={null}>
-        <ListingGrid listings={results} />
+        <ListingGrid
+          listings={results}
+          userId={user?.id ?? null}
+          initialWishlistIds={wishlistIds}
+        />
       </Suspense>
     </div>
   );

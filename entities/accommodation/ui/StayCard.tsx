@@ -1,18 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Star, Heart } from "lucide-react";
 import Image from "next/image";
 import { Stay } from "../model/types";
 
-export function StayCard({ stay }: { stay: Stay }) {
-  const [liked, setLiked] = useState(false);
+interface StayCardProps {
+  stay: Stay;
+  liked?: boolean;
+  onToggleLike?: (stay: Stay) => void;
+}
 
+export function StayCard({ stay, liked = false, onToggleLike }: StayCardProps) {
   function handleLikeClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    setLiked((v) => !v);
+    onToggleLike?.(stay);
   }
 
   return (
