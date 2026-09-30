@@ -11,6 +11,7 @@ import {
   SupportCta,
 } from "@/widgets/mypage";
 import { getHostRevenue } from "@/entities/booking/api/getHostRevenue";
+import { getMyWishlists } from "@/entities/wishlist/api/getMyWishlists";
 
 export const metadata = {
   title: "쉼터 | 마이페이지",
@@ -26,16 +27,18 @@ export default async function MyPage() {
   }
 
   const now = new Date();
-  const [listings, bookings, revenue] = await Promise.all([
+  const [listings, bookings, revenue, wishlists] = await Promise.all([
     getMyListings(profile.id),
     getMyBookings(profile.id),
     getHostRevenue(profile.id, now.getFullYear(), now.getMonth() + 1),
+    getMyWishlists(profile.id),
   ]);
+
   return (
     <main className="min-h-screen bg-brand-50 text-brand-900">
       <ProfileHeader profile={profile} />
       <QuickStats />
-      <Reservations bookings={bookings} />
+      <Reservations bookings={bookings} recentWishlist={wishlists[0] ?? null} />
       <Schedule bookings={bookings} />
       <HostDashboard listings={listings} revenue={revenue} />
       <SupportCta />

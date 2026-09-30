@@ -1,12 +1,20 @@
-import { ChevronRight, PenLine, ArrowRight, CalendarX } from "lucide-react";
+import {
+  ChevronRight,
+  PenLine,
+  ArrowRight,
+  CalendarX,
+  Heart,
+} from "lucide-react";
 import Link from "next/link";
 import type { BookingWithListing } from "@/entities/booking/model/types";
 import Image from "next/image";
 import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
 import { isCancellable } from "@/entities/booking/lib/isCancellable";
+import { WishlistItem } from "@/entities/wishlist/model/types";
 
 interface ReservationsProps {
-  bookings: BookingWithListing[];
+  bookings?: BookingWithListing[];
+  recentWishlist?: WishlistItem | null;
 }
 
 const WEEKDAY_KOR = ["일", "월", "화", "수", "목", "금", "토"];
@@ -28,7 +36,10 @@ function getDDay(checkInStr: string) {
   return `D-${diffDays}`;
 }
 
-export function Reservations({ bookings }: ReservationsProps) {
+export function Reservations({
+  bookings = [],
+  recentWishlist = null,
+}: ReservationsProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -200,28 +211,48 @@ export function Reservations({ bookings }: ReservationsProps) {
             </div>
 
             <div className="premium-card-outer flex-1">
-              <div className="premium-card-inner group flex h-full cursor-pointer gap-2 bg-white p-2">
-                <div className="relative w-1/3 overflow-hidden rounded-xl">
-                  <Image
-                    src="https://picsum.photos/seed/stay-forest/400/400"
-                    alt="숙소 이미지"
-                    fill
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/10" />
-                </div>
-                <div className="flex w-2/3 flex-col justify-center p-3">
-                  <div className="mb-1 text-[10px] font-bold text-brand-400 uppercase">
-                    최근 저장한 숙소
+              {recentWishlist ? (
+                <Link
+                  href={`/listings/${recentWishlist.listing_id}`}
+                  className="premium-card-inner group flex h-full cursor-pointer gap-2 bg-white p-2"
+                >
+                  <div className="relative w-1/3 overflow-hidden rounded-xl">
+                    <img
+                      src={
+                        recentWishlist.listing.images[0] ?? "/placeholder.svg"
+                      }
+                      alt={recentWishlist.listing.name}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/10" />
                   </div>
-                  <h4 className="mb-1 truncate text-sm font-bold text-brand-900">
-                    포레스트 캐빈, 숲 속의 밤
-                  </h4>
-                  <p className="font-satoshi text-sm font-medium text-brand-600">
-                    ₩180,000 / 1박
+                  <div className="flex w-2/3 flex-col justify-center p-3">
+                    <div className="mb-1 text-[10px] font-bold text-brand-400 uppercase">
+                      최근 저장한 숙소
+                    </div>
+                    <h4 className="mb-1 truncate text-sm font-bold text-brand-900">
+                      {recentWishlist.listing.name}
+                    </h4>
+                    <p className="font-satoshi text-sm font-medium text-brand-600">
+                      ₩{recentWishlist.listing.price_per_night.toLocaleString()}{" "}
+                      / 1박
+                    </p>
+                  </div>
+                </Link>
+              ) : (
+                <div className="premium-card-inner flex h-full flex-col items-center justify-center gap-2 bg-white p-6 text-center">
+                  <Heart size={22} className="text-brand-300" />
+                  <p className="text-xs text-brand-400">
+                    아직 저장한 숙소가 없어요
                   </p>
+                  <Link
+                    href="/listings"
+                    className="mt-1 text-xs font-semibold text-brand-900 underline underline-offset-4"
+                  >
+                    숙소 둘러보기
+                  </Link>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
