@@ -254,6 +254,14 @@ export function Reservations({
                 </div>
               )}
             </div>
+            {recentWishlist && (
+              <Link
+                href="/mypage/wishlists"
+                className="text-center text-xs font-semibold text-brand-500 underline underline-offset-4 transition-colors hover:text-brand-900"
+              >
+                저장한 숙소 모두 보기
+              </Link>
+            )}
           </div>
         </div>
       </div>
