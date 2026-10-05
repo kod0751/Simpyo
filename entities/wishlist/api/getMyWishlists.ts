@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type { WishlistItem } from "../model/types";
 
-const MOCK_RATING = 4.8;
-const MOCK_REVIEWS = 0;
+// DB에서 가져오지 않는 값 (profiles.is_superhost join 시 교체)
 const MOCK_SUPERHOST = false;
 
 export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
@@ -53,8 +52,8 @@ export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
         is_active: l.is_active as boolean,
         created_at: l.created_at as string,
         updated_at: l.updated_at as string,
-        rating: MOCK_RATING,
-        reviews: MOCK_REVIEWS,
+        rating: Number(l.rating),
+        reviews: l.review_count as number,
         superhost: MOCK_SUPERHOST,
       },
     };

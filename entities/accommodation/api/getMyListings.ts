@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Stay } from "../model/types";
 
-const MOCK_RATING = 4.8;
-const MOCK_REVIEWS = 0;
+// DB에서 가져오지 않는 값 (profiles.is_superhost join 시 교체)
 const MOCK_SUPERHOST = false;
 
 export async function getMyListings(hostId: string): Promise<Stay[]> {
@@ -40,8 +39,8 @@ export async function getMyListings(hostId: string): Promise<Stay[]> {
     is_active: row.is_active,
     created_at: row.created_at,
     updated_at: row.updated_at,
-    rating: MOCK_RATING,
-    reviews: MOCK_REVIEWS,
+    rating: Number(row.rating),
+    reviews: row.review_count,
     superhost: MOCK_SUPERHOST,
   }));
 }

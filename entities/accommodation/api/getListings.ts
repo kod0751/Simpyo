@@ -8,9 +8,7 @@ interface GetListingsParams {
   sort?: SortKey;
 }
 
-// 임시 하드코딩 값 (리뷰/평점 스키마 도입 전까지)
-const MOCK_RATING = 4.8;
-const MOCK_REVIEWS = 0;
+// DB에서 가져오지 않는 값 (profiles.is_superhost join 시 교체)
 const MOCK_SUPERHOST = false;
 
 export async function getListings({
@@ -69,8 +67,8 @@ export async function getListings({
     is_active: row.is_active,
     created_at: row.created_at,
     updated_at: row.updated_at,
-    rating: MOCK_RATING,
-    reviews: MOCK_REVIEWS,
+    rating: Number(row.rating),
+    reviews: row.review_count,
     superhost: MOCK_SUPERHOST,
   }));
 }
