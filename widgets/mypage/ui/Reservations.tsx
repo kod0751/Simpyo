@@ -11,10 +11,18 @@ import Image from "next/image";
 import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
 import { isCancellable } from "@/entities/booking/lib/isCancellable";
 import { WishlistItem } from "@/entities/wishlist/model/types";
+import { ReviewableBooking } from "@/entities/review/model/types";
 
 interface ReservationsProps {
   bookings?: BookingWithListing[];
   recentWishlist?: WishlistItem | null;
+  reviewableBooking?: ReviewableBooking | null;
+}
+
+function formatStayPeriod(checkIn: string, checkOut: string) {
+  const inDate = new Date(checkIn);
+  const outDate = new Date(checkOut);
+  return `${inDate.getFullYear()}.${inDate.getMonth() + 1}.${inDate.getDate()} - ${outDate.getMonth() + 1}.${outDate.getDate()} 다녀옴`;
 }
 
 const WEEKDAY_KOR = ["일", "월", "화", "수", "목", "금", "토"];
@@ -39,6 +47,7 @@ function getDDay(checkInStr: string) {
 export function Reservations({
   bookings = [],
   recentWishlist = null,
+  reviewableBooking = null,
 }: ReservationsProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -185,29 +194,42 @@ export function Reservations({
           {/* TODO: 리뷰/찜 스키마 도입 전까지 하드코딩 유지 */}
           <div className="flex flex-col gap-6 lg:col-span-4">
             <div className="premium-card-outer flex-1">
-              <div className="premium-card-inner group relative flex h-full cursor-pointer flex-col justify-between overflow-hidden bg-white p-6 transition-colors hover:bg-brand-50">
-                <PenLine
-                  size={120}
-                  className="absolute -top-5 -right-5 text-brand-900 opacity-5 transition-transform duration-700 group-hover:scale-110"
-                />
-                <div>
-                  <div className="mb-4 inline-flex items-center gap-1.5 rounded-md bg-brand-100 px-2.5 py-1 text-[10px] font-bold text-brand-600">
-                    리뷰 대기
+              {reviewableBooking ? (
+                <Link
+                  href={`/reviews/write/${reviewableBooking.id}`}
+                  className="premium-card-inner group relative flex h-full cursor-pointer flex-col justify-between overflow-hidden bg-white p-6 transition-colors hover:bg-brand-50"
+                >
+                  <PenLine
+                    size={120}
+                    className="absolute -top-5 -right-5 text-brand-900 opacity-5 transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div>
+                    <div className="mb-4 inline-flex items-center gap-1.5 rounded-md bg-brand-100 px-2.5 py-1 text-[10px] font-bold text-brand-600">
+                      리뷰 대기
+                    </div>
+                    <h3 className="mb-2 truncate text-lg font-bold text-brand-900">
+                      {reviewableBooking.listing.name}
+                    </h3>
+                    <p className="text-sm text-brand-500">
+                      {formatStayPeriod(
+                        reviewableBooking.check_in,
+                        reviewableBooking.check_out,
+                      )}
+                    </p>
                   </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-900">
-                    북촌 한옥 스튜디오
-                  </h3>
-                  <p className="text-sm text-brand-500">
-                    2023.10.20 - 10.22 다녀옴
-                  </p>
-                </div>
-                <div className="mt-6 flex items-center justify-between text-sm font-semibold text-brand-900">
-                  리뷰 작성하고 3,000P 받기
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 transition-colors group-hover:bg-brand-200">
-                    <ArrowRight size={16} />
+                  <div className="mt-6 flex items-center justify-between text-sm font-semibold text-brand-900">
+                    리뷰 작성하기
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 transition-colors group-hover:bg-brand-200">
+                      <ArrowRight size={16} />
+                    </div>
                   </div>
+                </Link>
+              ) : (
+                <div className="premium-card-inner flex h-full flex-col items-center justify-center gap-2 bg-white p-6 text-center">
+                  <PenLine size={22} className="text-brand-300" />
+                  <p className="text-xs text-brand-400">작성할 리뷰가 없어요</p>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="premium-card-outer flex-1">

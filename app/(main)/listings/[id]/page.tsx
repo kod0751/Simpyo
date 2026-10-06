@@ -7,6 +7,7 @@ import { AmenitiesSection } from "@/widgets/listing-detail/ui/AmenitiesSection";
 import { BookingSidebar } from "@/widgets/listing-detail/ui/BookingSidebar";
 import { ReviewsSection } from "@/widgets/listing-detail/ui/ReviewsSection";
 import { LocationSection } from "@/widgets/listing-detail/ui/LocationSection";
+import { getListingReviews } from "@/entities/review/api/getListingReviews";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -19,6 +20,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
   if (!listing) {
     notFound();
   }
+
+  const reviews = await getListingReviews(id);
 
   return (
     <>
@@ -43,7 +46,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
         </div>
       </main>
 
-      <ReviewsSection rating={listing.rating} reviewCount={listing.reviews} />
+      <ReviewsSection
+        rating={listing.rating}
+        reviewCount={listing.reviews}
+        reviews={reviews}
+      />
       <LocationSection region={listing.region} address={listing.address} />
     </>
   );
