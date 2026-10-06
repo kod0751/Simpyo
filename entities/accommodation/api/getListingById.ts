@@ -1,15 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Stay } from "../model/types";
 
-//  DB에서 가져오지 않는 값 (profiles.is_superhost join 시 교체)
-const MOCK_SUPERHOST = false;
-
 export async function getListingById(id: string): Promise<Stay | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("listings")
-    .select("*")
+    .select("*, host:profiles!inner (is_superhost)")
     .eq("id", id)
     .eq("is_active", true)
     .single();
@@ -18,6 +15,8 @@ export async function getListingById(id: string): Promise<Stay | null> {
     console.error("getListingById error:", error);
     return null;
   }
+
+  const host = data.host as unknown as { is_superhost: boolean } | null;
 
   return {
     id: data.id,
@@ -42,6 +41,6 @@ export async function getListingById(id: string): Promise<Stay | null> {
     updated_at: data.updated_at,
     rating: Number(data.rating),
     reviews: data.review_count,
-    superhost: MOCK_SUPERHOST,
+    superhost: host?.is_superhost ?? false,
   };
 }

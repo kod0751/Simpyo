@@ -1,9 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { WishlistItem } from "../model/types";
 
-// DB에서 가져오지 않는 값 (profiles.is_superhost join 시 교체)
-const MOCK_SUPERHOST = false;
-
 export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
   const supabase = await createClient();
 
@@ -11,9 +8,9 @@ export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
     .from("wishlists")
     .select(
       `
-      id, listing_id, created_at,
-      listing:listings!inner (*)
-    `,
+  id, listing_id, created_at,
+  listing:listings!inner (*, host:profiles!inner (is_superhost))
+`,
     )
     .eq("user_id", userId)
     .eq("listing.is_active", true)
@@ -26,6 +23,7 @@ export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
 
   return (data ?? []).map((row) => {
     const l = row.listing as unknown as Record<string, unknown>;
+    const host = l.host as { is_superhost: boolean } | null;
 
     return {
       id: row.id,
@@ -54,7 +52,7 @@ export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
         updated_at: l.updated_at as string,
         rating: Number(l.rating),
         reviews: l.review_count as number,
-        superhost: MOCK_SUPERHOST,
+        superhost: host?.is_superhost ?? false,
       },
     };
   });

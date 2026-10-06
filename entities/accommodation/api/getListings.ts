@@ -8,9 +8,6 @@ interface GetListingsParams {
   sort?: SortKey;
 }
 
-// DB에서 가져오지 않는 값 (profiles.is_superhost join 시 교체)
-const MOCK_SUPERHOST = false;
-
 export async function getListings({
   query = "",
   category = "all",
@@ -18,7 +15,10 @@ export async function getListings({
 }: GetListingsParams): Promise<Stay[]> {
   const supabase = await createClient();
 
-  let q = supabase.from("listings").select("*").eq("is_active", true);
+  let q = supabase
+    .from("listings")
+    .select("*, host:profiles!inner (is_superhost)")
+    .eq("is_active", true);
 
   if (category !== "all") {
     q = q.eq("category", category);
@@ -46,29 +46,33 @@ export async function getListings({
     return [];
   }
 
-  return (data ?? []).map((row) => ({
-    id: row.id,
-    host_id: row.host_id,
-    name: row.name,
-    description: row.description,
-    address: row.address,
-    region: row.region,
-    category: row.category,
-    price_per_night: row.price_per_night,
-    max_guests: row.max_guests,
-    bedrooms: row.bedrooms,
-    beds: row.beds,
-    bathrooms: row.bathrooms,
-    amenities: row.amenities ?? [],
-    tags: row.tags ?? [],
-    images: row.images ?? [],
-    host_name: row.host_name,
-    host_phone: row.host_phone,
-    is_active: row.is_active,
-    created_at: row.created_at,
-    updated_at: row.updated_at,
-    rating: Number(row.rating),
-    reviews: row.review_count,
-    superhost: MOCK_SUPERHOST,
-  }));
+  return (data ?? []).map((row) => {
+    const host = row.host as unknown as { is_superhost: boolean } | null;
+
+    return {
+      id: row.id,
+      host_id: row.host_id,
+      name: row.name,
+      description: row.description,
+      address: row.address,
+      region: row.region,
+      category: row.category,
+      price_per_night: row.price_per_night,
+      max_guests: row.max_guests,
+      bedrooms: row.bedrooms,
+      beds: row.beds,
+      bathrooms: row.bathrooms,
+      amenities: row.amenities ?? [],
+      tags: row.tags ?? [],
+      images: row.images ?? [],
+      host_name: row.host_name,
+      host_phone: row.host_phone,
+      is_active: row.is_active,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      rating: Number(row.rating),
+      reviews: row.review_count,
+      superhost: host?.is_superhost ?? false,
+    };
+  });
 }
