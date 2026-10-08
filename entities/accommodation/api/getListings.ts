@@ -1,17 +1,34 @@
 import type { SortKey } from "@/features/listing-filter/model/useListingFilters";
 import { Stay } from "../model/types";
 import { createClient } from "@/lib/supabase/server";
+import { getUnavailableListingIds } from "@/entities/booking/api/getUnavailableListingIds";
 
 interface GetListingsParams {
   query?: string;
   category?: string;
   sort?: SortKey;
+  checkIn?: string;
+  checkOut?: string;
+}
+
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidRange(checkIn?: string, checkOut?: string) {
+  return (
+    !!checkIn &&
+    !!checkOut &&
+    DATE_PATTERN.test(checkIn) &&
+    DATE_PATTERN.test(checkOut) &&
+    checkIn < checkOut
+  );
 }
 
 export async function getListings({
   query = "",
   category = "all",
   sort = "recommended",
+  checkIn,
+  checkOut,
 }: GetListingsParams): Promise<Stay[]> {
   const supabase = await createClient();
 
@@ -19,6 +36,14 @@ export async function getListings({
     .from("listings")
     .select("*, host:profiles!inner (is_superhost)")
     .eq("is_active", true);
+
+  if (checkIn && checkOut && isValidRange(checkIn, checkOut)) {
+    const unavailableIds = await getUnavailableListingIds(checkIn, checkOut);
+
+    if (unavailableIds.length > 0) {
+      q = q.not("id", "in", `(${unavailableIds.join(",")})`);
+    }
+  }
 
   if (category !== "all") {
     q = q.eq("category", category);

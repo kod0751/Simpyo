@@ -10,7 +10,13 @@ import { createClient } from "@/lib/supabase/server";
 import { getMyWishlistIds } from "@/entities/wishlist/api/getMyWishlistIds";
 
 interface PageProps {
-  searchParams: Promise<{ q?: string; category?: string; sort?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    category?: string;
+    sort?: string;
+    checkIn?: string;
+    checkOut?: string;
+  }>;
 }
 
 export default async function ListingsPage({ searchParams }: PageProps) {
@@ -27,6 +33,8 @@ export default async function ListingsPage({ searchParams }: PageProps) {
       query: params.q,
       category: params.category,
       sort: params.sort as SortKey,
+      checkIn: params.checkIn,
+      checkOut: params.checkOut,
     }),
     supabase.auth.getUser(),
   ]);

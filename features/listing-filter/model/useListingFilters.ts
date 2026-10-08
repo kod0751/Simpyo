@@ -9,12 +9,16 @@ export interface ListingFilters {
   query: string;
   category: string;
   sort: SortKey;
+  checkIn: string;
+  checkOut: string;
 }
 
 const DEFAULTS: ListingFilters = {
   query: "",
   category: "all",
   sort: "recommended",
+  checkIn: "",
+  checkOut: "",
 };
 
 export function useListingFilters() {
@@ -28,6 +32,8 @@ export function useListingFilters() {
       query: searchParams.get("q") ?? DEFAULTS.query,
       category: searchParams.get("category") ?? DEFAULTS.category,
       sort: (searchParams.get("sort") as SortKey) ?? DEFAULTS.sort,
+      checkIn: searchParams.get("checkIn") ?? DEFAULTS.checkIn,
+      checkOut: searchParams.get("checkOut") ?? DEFAULTS.checkOut,
     }),
     [searchParams],
   );
