@@ -9,16 +9,13 @@ import { useAuthModal } from "@/features/auth/model/useAuthModal";
 import { useListingAvailability } from "@/features/booking-listing/model/useListingAvailability";
 import { useCreateBooking } from "@/features/booking-listing/model/useCreateBooking";
 import { createClient } from "@/lib/supabase/client";
+import { toDateKey } from "@/shared/lib/date";
 
 interface BookingSidebarProps {
   listingId: string;
   hostId: string;
   pricePerNight: number;
   maxGuests: number;
-}
-
-function toDateKey(date: Date) {
-  return date.toISOString().split("T")[0];
 }
 
 export function BookingSidebar({
