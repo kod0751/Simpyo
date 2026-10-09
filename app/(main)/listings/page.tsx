@@ -8,6 +8,7 @@ import { MapPin } from "lucide-react";
 import { ListingGrid } from "@/widgets/listing-list";
 import { createClient } from "@/lib/supabase/server";
 import { getMyWishlistIds } from "@/entities/wishlist/api/getMyWishlistIds";
+import { DateRangeFilter } from "@/features/listing-filter/ui/DateRangeFilter";
 
 interface PageProps {
   searchParams: Promise<{
@@ -58,6 +59,8 @@ export default async function ListingsPage({ searchParams }: PageProps) {
       >
         <div className="sticky top-24 z-30 mb-8 flex flex-col gap-3 rounded-[2rem] border border-brand-100 bg-white/90 p-3 shadow-premium backdrop-blur-xl sm:flex-row sm:items-center">
           <SearchInput />
+          <div className="hidden h-10 w-px bg-brand-100 sm:block" />
+          <DateRangeFilter />
           <div className="hidden h-10 w-px bg-brand-100 sm:block" />
           <SortSelect />
         </div>
