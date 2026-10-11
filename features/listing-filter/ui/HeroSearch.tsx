@@ -2,17 +2,36 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, Search } from "lucide-react";
+import { Calendar as CalendarIcon, Search } from "lucide-react";
+import {
+  DateRangePicker,
+  type DateRangeValue,
+} from "@/shared/ui/DateRangePicker";
+import { formatRangeLabel } from "@/shared/lib/date";
 
 export function HeroSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [dates, setDates] = useState<DateRangeValue>({
+    checkIn: "",
+    checkOut: "",
+  });
+
+  const hasDates = !!dates.checkIn && !!dates.checkOut;
 
   function handleSearch() {
+    const params = new URLSearchParams();
+
     const trimmed = query.trim();
-    router.push(
-      trimmed ? `/listings?q=${encodeURIComponent(trimmed)}` : "/listings",
-    );
+    if (trimmed) params.set("q", trimmed);
+
+    if (hasDates) {
+      params.set("checkIn", dates.checkIn);
+      params.set("checkOut", dates.checkOut);
+    }
+
+    const search = params.toString();
+    router.push(search ? `/listings?${search}` : "/listings");
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -43,13 +62,30 @@ export function HeroSearch() {
 
       <div className="hidden h-12 w-px bg-brand-100 sm:block" />
 
-      {/* Step 4에서 캘린더 연결 예정 */}
-      <div className="flex w-full flex-1 items-center gap-3 rounded-2xl px-5 py-3">
-        <Calendar size={20} className="text-brand-500" />
-        <div>
-          <div className="mb-1 text-xs font-semibold text-brand-400">일정</div>
-          <div className="font-medium text-brand-300">날짜 추가</div>
-        </div>
+      <div className="w-full flex-1">
+        <DateRangePicker
+          value={dates}
+          onChange={setDates}
+          align="left"
+          triggerClassName="flex w-full cursor-pointer items-center gap-3 rounded-2xl px-5 py-3 text-left transition-colors hover:bg-brand-50"
+          trigger={
+            <>
+              <CalendarIcon size={20} className="text-brand-500" />
+              <div>
+                <div className="mb-1 text-xs font-semibold text-brand-400">
+                  일정
+                </div>
+                <div
+                  className={`font-medium ${hasDates ? "text-brand-900" : "text-brand-300"}`}
+                >
+                  {hasDates
+                    ? formatRangeLabel(dates.checkIn, dates.checkOut)
+                    : "날짜 추가"}
+                </div>
+              </div>
+            </>
+          }
+        />
       </div>
 
       <button

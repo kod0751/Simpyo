@@ -8,7 +8,7 @@ import { HeroSearch } from "@/features/listing-filter/ui/HeroSearch";
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden pt-32 pb-24">
+    <section className="relative flex min-h-screen items-center overflow-x-clip pt-32 pb-24">
       {/* Abstract warm background shape */}
       <div className="pointer-events-none absolute top-0 right-0 h-200 w-200 -translate-y-1/2 translate-x-1/3 rounded-full bg-brand-100 opacity-60 blur-3xl" />
 
