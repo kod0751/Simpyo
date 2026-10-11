@@ -9,3 +9,9 @@ export function parseDateKey(key: string): Date {
   const [year, month, day] = key.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
+
+export function formatRangeLabel(checkIn: string, checkOut: string): string {
+  const from = parseDateKey(checkIn);
+  const to = parseDateKey(checkOut);
+  return `${from.getMonth() + 1}.${from.getDate()} - ${to.getMonth() + 1}.${to.getDate()}`;
+}
