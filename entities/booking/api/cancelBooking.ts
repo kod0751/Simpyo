@@ -19,6 +19,9 @@ export async function cancelBooking({
     .eq("id", bookingId);
 
   if (error) {
+    if (error.code === "P0001") {
+      throw new Error(error.message);
+    }
     throw new Error(`예약 취소에 실패했어요: ${error.message}`);
   }
 

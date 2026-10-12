@@ -31,7 +31,7 @@ export function CancelBookingButton({
   className,
 }: CancelBookingButtonProps) {
   const router = useRouter();
-  const { mutate, isPending } = useCancelBooking();
+  const { mutate, isPending, isError, error } = useCancelBooking();
 
   function handleCancel() {
     mutate(
@@ -68,6 +68,13 @@ export function CancelBookingButton({
             취소 후에는 되돌릴 수 없어요.
           </AlertDialogDescription>
         </AlertDialogHeader>
+
+        {isError && (
+          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+            {error.message}
+          </p>
+        )}
+
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>돌아가기</AlertDialogCancel>
           <AlertDialogAction
