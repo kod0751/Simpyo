@@ -1,4 +1,4 @@
-import { CalendarPlus, CalendarDays, MapPin, CalendarX } from "lucide-react";
+import { CalendarDays, MapPin, CalendarX } from "lucide-react";
 import type { BookingWithListing } from "@/entities/booking/model/types";
 import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
 import { isCancellable } from "@/entities/booking/lib/isCancellable";
@@ -38,13 +38,6 @@ export function Schedule({ bookings }: ScheduleProps) {
               예약된 여행 일정을 한눈에 확인하세요.
             </p>
           </div>
-          <button
-            type="button"
-            className="flex cursor-pointer items-center gap-2 rounded-full border border-brand-200 bg-white px-5 py-2.5 text-sm font-semibold text-brand-900 shadow-sm transition-all hover:bg-brand-50 active:scale-95"
-          >
-            <CalendarPlus size={18} />
-            새로운 일정 등록
-          </button>
         </div>
 
         <div className="mx-auto max-w-4xl">

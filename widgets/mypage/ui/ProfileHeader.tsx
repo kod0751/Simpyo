@@ -1,4 +1,4 @@
-import { Star, Settings } from "lucide-react";
+import { Star } from "lucide-react";
 import type { Profile } from "@/entities/profile/model/types";
 import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
 
@@ -47,13 +47,6 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
             </div>
           </div>
           <div className="flex gap-4">
-            <button
-              type="button"
-              aria-label="설정"
-              className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-brand-200 bg-white text-brand-900 shadow-sm transition-all hover:scale-105 hover:bg-brand-50 active:scale-95"
-            >
-              <Settings size={20} />
-            </button>
             <NotificationBell userId={profile.id} />
           </div>
         </div>
