@@ -6,6 +6,7 @@ import { CalendarDays, MapPin, CalendarX } from "lucide-react";
 import type { BookingWithListing } from "@/entities/booking/model/types";
 import { isCancellable } from "@/entities/booking/lib/isCancellable";
 import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
+import { getBookingState } from "@/entities/booking/lib/getBookingState";
 
 interface BookingsListProps {
   bookings: BookingWithListing[];
@@ -20,12 +21,6 @@ const TABS: { key: FilterTab; label: string }[] = [
   { key: "cancelled", label: "취소됨" },
 ];
 
-function getBookingState(booking: BookingWithListing, today: Date): FilterTab {
-  if (booking.status === "cancelled") return "cancelled";
-  if (new Date(booking.check_out) >= today) return "upcoming";
-  return "completed";
-}
-
 function formatDateRange(checkIn: string, checkOut: string) {
   const inDate = new Date(checkIn);
   const outDate = new Date(checkOut);
@@ -35,13 +30,11 @@ function formatDateRange(checkIn: string, checkOut: string) {
 export function BookingsList({ bookings }: BookingsListProps) {
   const [tab, setTab] = useState<FilterTab>("all");
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
   const withState = bookings.map((b) => ({
     booking: b,
-    state: getBookingState(b, today),
+    state: getBookingState(b),
   }));
+
   const filtered =
     tab === "all" ? withState : withState.filter((b) => b.state === tab);
 
