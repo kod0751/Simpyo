@@ -24,3 +24,16 @@ export type BookingWithListing = Booking & {
     host_id: string;
   };
 };
+
+export type HostBooking = Booking & {
+  listing: {
+    id: string
+    name: string
+    images: string[]
+  }
+  guest: {
+    id: string
+    name: string | null
+    avatar_url: string | null
+  }
+}

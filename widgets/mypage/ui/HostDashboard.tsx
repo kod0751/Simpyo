@@ -1,8 +1,14 @@
 import Link from "next/link";
-import { KeyRound, HousePlus, Wallet, Star, Images } from "lucide-react";
+import {
+  KeyRound,
+  HousePlus,
+  Wallet,
+  Star,
+  Images,
+  CalendarCheck,
+} from "lucide-react";
 import type { Stay } from "@/entities/accommodation/model/types";
 import { DeleteListingButton } from "@/features/manage-listing/ui/DeleteListingButton";
-import Image from "next/image";
 import type { MonthlyRevenue } from "@/entities/booking/api/getHostRevenue";
 
 interface HostDashboardProps {
@@ -29,13 +35,22 @@ export function HostDashboard({ listings, revenue }: HostDashboardProps) {
               운영 중인 공간의 상태와 수익을 관리하세요.
             </p>
           </div>
-          <Link
-            href="/register/type"
-            className="flex items-center gap-2 rounded-full bg-brand-900 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-brand-900/10 transition-all hover:bg-brand-800 active:scale-[0.98]"
-          >
-            <HousePlus size={18} />
-            새로운 숙소 등록
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/mypage/hosting"
+              className="flex items-center gap-2 rounded-full border border-brand-200 bg-white px-6 py-3 text-sm font-bold text-brand-900 transition-all hover:bg-brand-50 active:scale-[0.98]"
+            >
+              <CalendarCheck size={18} />
+              예약 관리
+            </Link>
+            <Link
+              href="/register/type"
+              className="flex items-center gap-2 rounded-full bg-brand-900 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-brand-900/10 transition-all hover:bg-brand-800 active:scale-[0.98]"
+            >
+              <HousePlus size={18} />
+              새로운 숙소 등록
+            </Link>
+          </div>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-12">
