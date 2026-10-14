@@ -11,10 +11,21 @@ import {
   useMarkAllAsRead,
   useMarkAsRead,
 } from "../model/useNotifications";
+import { Notification } from "@/entities/notification/model/types";
 
 interface NotificationBellProps {
   userId: string;
   buttonClassName?: string;
+}
+
+function getNotificationHref(n: Notification): string | null {
+  switch (n.type) {
+    case "booking_created":
+    case "booking_cancelled":
+      return "/mypage/hosting";
+    default:
+      return n.listing_id ? `/listings/${n.listing_id}` : null;
+  }
 }
 
 function timeAgo(dateStr: string) {
@@ -91,6 +102,7 @@ export function NotificationBell({
             ) : (
               <div className="max-h-80 space-y-1.5 overflow-y-auto p-1">
                 {notifications.map((n) => {
+                  const href = getNotificationHref(n);
                   const content = (
                     <>
                       <div className="flex items-center gap-2">
@@ -114,9 +126,9 @@ export function NotificationBell({
                         n.is_read ? "" : "bg-brand-50/60"
                       }`}
                     >
-                      {n.listing_id ? (
+                      {href ? (
                         <Link
-                          href={`/listings/${n.listing_id}`}
+                          href={href}
                           onClick={() => {
                             if (!n.is_read) markRead(n.id);
                             setOpen(false);
