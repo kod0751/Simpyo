@@ -19,9 +19,10 @@ import {
 
 interface EditListingFormProps {
   listing: Stay;
+  hostPhone: string;
 }
 
-export function EditListingForm({ listing }: EditListingFormProps) {
+export function EditListingForm({ listing, hostPhone }: EditListingFormProps) {
   const router = useRouter();
   const {
     form,
@@ -31,7 +32,7 @@ export function EditListingForm({ listing }: EditListingFormProps) {
     removeExistingImage,
     addNewPhotos,
     removeNewPhoto,
-  } = useEditListingForm(listing);
+  } = useEditListingForm(listing, hostPhone);
   const { mutate, isPending, isError, error } = useUpdateListing();
 
   function handleSubmit() {

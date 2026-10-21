@@ -15,7 +15,6 @@ export type Stay = {
   tags: string[];
   images: string[];
   host_name: string | null;
-  host_phone: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;

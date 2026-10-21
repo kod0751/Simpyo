@@ -1,12 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Stay } from "../model/types";
+import { LISTING_PUBLIC_COLUMNS } from "./listingColumns";
 
 export async function getListingById(id: string): Promise<Stay | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("listings")
-    .select("*, host:profiles!inner (is_superhost)")
+    .select(`${LISTING_PUBLIC_COLUMNS}, host:profiles!inner (is_superhost)`)
     .eq("id", id)
     .eq("is_active", true)
     .single();
@@ -35,7 +36,6 @@ export async function getListingById(id: string): Promise<Stay | null> {
     tags: data.tags ?? [],
     images: data.images ?? [],
     host_name: data.host_name,
-    host_phone: data.host_phone,
     is_active: data.is_active,
     created_at: data.created_at,
     updated_at: data.updated_at,

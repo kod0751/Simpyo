@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { WishlistItem } from "../model/types";
+import { LISTING_PUBLIC_COLUMNS } from "@/entities/accommodation/api/listingColumns";
 
 export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
   const supabase = await createClient();
@@ -9,7 +10,7 @@ export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
     .select(
       `
   id, listing_id, created_at,
-  listing:listings!inner (*, host:profiles!inner (is_superhost))
+  listing:listings!inner (${LISTING_PUBLIC_COLUMNS}, host:profiles!inner (is_superhost))
 `,
     )
     .eq("user_id", userId)
@@ -46,7 +47,6 @@ export async function getMyWishlists(userId: string): Promise<WishlistItem[]> {
         tags: (l.tags as string[]) ?? [],
         images: (l.images as string[]) ?? [],
         host_name: (l.host_name as string | null) ?? null,
-        host_phone: (l.host_phone as string | null) ?? null,
         is_active: l.is_active as boolean,
         created_at: l.created_at as string,
         updated_at: l.updated_at as string,

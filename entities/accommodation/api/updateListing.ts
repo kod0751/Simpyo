@@ -103,7 +103,7 @@ export async function updateListing({
       host_phone: form.hostPhone,
     })
     .eq("id", id)
-    .select()
+    .select("id")
     .single();
 
   if (error) {

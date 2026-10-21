@@ -2,6 +2,7 @@ import type { SortKey } from "@/features/listing-filter/model/useListingFilters"
 import { Stay } from "../model/types";
 import { createClient } from "@/lib/supabase/server";
 import { getUnavailableListingIds } from "@/entities/booking/api/getUnavailableListingIds";
+import { LISTING_PUBLIC_COLUMNS } from "./listingColumns";
 
 interface GetListingsParams {
   query?: string;
@@ -34,7 +35,7 @@ export async function getListings({
 
   let q = supabase
     .from("listings")
-    .select("*, host:profiles!inner (is_superhost)")
+    .select(`${LISTING_PUBLIC_COLUMNS}, host:profiles!inner (is_superhost)`)
     .eq("is_active", true);
 
   if (checkIn && checkOut && isValidRange(checkIn, checkOut)) {
@@ -91,7 +92,6 @@ export async function getListings({
       tags: row.tags ?? [],
       images: row.images ?? [],
       host_name: row.host_name,
-      host_phone: row.host_phone,
       is_active: row.is_active,
       created_at: row.created_at,
       updated_at: row.updated_at,

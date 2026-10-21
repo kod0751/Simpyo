@@ -1,12 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Stay } from "../model/types";
+import { LISTING_PUBLIC_COLUMNS } from "./listingColumns";
 
 export async function getMyListings(hostId: string): Promise<Stay[]> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("listings")
-    .select("*, host:profiles!inner (is_superhost)")
+    .select(`${LISTING_PUBLIC_COLUMNS}, host:profiles!inner (is_superhost)`)
     .eq("host_id", hostId)
     .order("created_at", { ascending: false });
 
@@ -32,7 +33,6 @@ export async function getMyListings(hostId: string): Promise<Stay[]> {
     tags: row.tags ?? [],
     images: row.images ?? [],
     host_name: row.host_name,
-    host_phone: row.host_phone,
     is_active: row.is_active,
     created_at: row.created_at,
     updated_at: row.updated_at,

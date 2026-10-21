@@ -30,7 +30,7 @@ function labelsToIds(
     .filter((id): id is string => id !== undefined);
 }
 
-function toEditFormData(listing: Stay): EditFormData {
+function toEditFormData(listing: Stay, hostPhone: string): EditFormData {
   return {
     propertyType: listing.category,
     region: listing.region,
@@ -45,14 +45,16 @@ function toEditFormData(listing: Stay): EditFormData {
     tags: labelsToIds(listing.tags, highlightTags),
     price: listing.price_per_night,
     hostName: listing.host_name ?? "",
-    hostPhone: listing.host_phone ?? "",
+    hostPhone,
     existingImages: listing.images,
     newPhotos: [],
   };
 }
 
-export function useEditListingForm(listing: Stay) {
-  const [form, setForm] = useState<EditFormData>(() => toEditFormData(listing));
+export function useEditListingForm(listing: Stay, hostPhone: string) {
+  const [form, setForm] = useState<EditFormData>(() =>
+    toEditFormData(listing, hostPhone),
+  );
 
   function update<K extends keyof EditFormData>(
     key: K,

@@ -69,7 +69,7 @@ export async function createListing(
       host_phone: form.hostPhone,
       is_active: true,
     })
-    .select()
+    .select("id")
     .single();
 
   if (error) {
