@@ -31,7 +31,6 @@ export default async function EditListingPage({ params }: PageProps) {
   }
 
   const hostPhone = await getListingHostPhone(listing.id);
-  console.log("수정 페이지 hostPhone:", hostPhone);
 
   return (
     <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
