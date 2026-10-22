@@ -1,3 +1,5 @@
+import { toDigits } from "@/shared/lib/phone";
+
 interface HostInfoStepProps {
   hostName: string;
   hostPhone: string;
@@ -12,7 +14,7 @@ export function HostInfoStep({
   onHostPhoneChange,
 }: HostInfoStepProps) {
   function handlePhoneChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
+    const digitsOnly = toDigits(e.target.value);
     onHostPhoneChange(digitsOnly);
   }
 
