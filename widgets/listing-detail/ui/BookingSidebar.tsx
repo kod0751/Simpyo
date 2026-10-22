@@ -10,6 +10,7 @@ import { useListingAvailability } from "@/features/booking-listing/model/useList
 import { useCreateBooking } from "@/features/booking-listing/model/useCreateBooking";
 import { createClient } from "@/lib/supabase/client";
 import { toDateKey } from "@/shared/lib/date";
+import { isValidPhone, toDigits } from "@/shared/lib/phone";
 
 interface BookingSidebarProps {
   listingId: string;
@@ -31,6 +32,7 @@ export function BookingSidebar({
 
   const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(1);
+  const [phone, setPhone] = useState("");
 
   const disabledDates = useMemo(() => {
     const today = new Date();
@@ -66,6 +68,7 @@ export function BookingSidebar({
 
     if (user.id === hostId) return;
     if (!range?.from || !range?.to || nights === 0) return;
+    if (!isValidPhone(phone)) return;
 
     mutate({
       listingId,
@@ -75,6 +78,7 @@ export function BookingSidebar({
       checkOut: toDateKey(range.to),
       guestsCount: guests,
       totalPrice,
+      guestPhone: phone,
     });
   }
 
@@ -145,10 +149,39 @@ export function BookingSidebar({
             </div>
           </div>
 
+          <div className="mb-6 rounded-2xl border border-brand-200 p-3">
+            <label
+              htmlFor="guest-phone"
+              className="mb-1 block text-xs font-semibold text-brand-700"
+            >
+              연락처
+            </label>
+            <input
+              id="guest-phone"
+              type="tel"
+              inputMode="numeric"
+              maxLength={11}
+              value={phone}
+              onChange={(e) => setPhone(toDigits(e.target.value))}
+              placeholder="01012345678"
+              className="w-full bg-transparent text-sm text-brand-900 outline-none placeholder:text-brand-300"
+            />
+            {phone.length > 0 && !isValidPhone(phone) && (
+              <p className="mt-1 text-xs text-red-500">
+                휴대폰 번호를 정확히 입력해 주세요.
+              </p>
+            )}
+            <p className="mt-2 text-[11px] text-brand-400">
+              예약이 확정되면 호스트에게만 전달돼요.
+            </p>
+          </div>
+
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={!range?.from || !range?.to || isPending}
+            disabled={
+              !range?.from || !range?.to || !isValidPhone(phone) || isPending
+            }
             className="mb-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand-900 py-4 text-lg font-bold text-white transition-all hover:bg-brand-800 disabled:cursor-default disabled:bg-brand-200 disabled:text-brand-400"
           >
             {isPending ? (

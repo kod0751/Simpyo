@@ -1,15 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createBooking } from "@/entities/booking/api/createBooking";
-
-interface CreateBookingParams {
-  listingId: string;
-  hostId: string;
-  guestId: string;
-  checkIn: string;
-  checkOut: string;
-  guestsCount: number;
-  totalPrice: number;
-}
+import {
+  createBooking,
+  CreateBookingParams,
+} from "@/entities/booking/api/createBooking";
 
 export function useCreateBooking() {
   const queryClient = useQueryClient();

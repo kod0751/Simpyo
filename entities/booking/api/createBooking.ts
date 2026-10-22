@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/client";
 import type { Booking } from "../model/types";
 
-interface CreateBookingParams {
+export interface CreateBookingParams {
   listingId: string;
   hostId: string;
   guestId: string;
@@ -9,6 +9,7 @@ interface CreateBookingParams {
   checkOut: string;
   guestsCount: number;
   totalPrice: number;
+  guestPhone: string;
 }
 
 export async function createBooking(
@@ -25,6 +26,7 @@ export async function createBooking(
       check_out: params.checkOut,
       guests_count: params.guestsCount,
       total_price: params.totalPrice,
+      guest_phone: params.guestPhone,
       status: "confirmed",
     })
     .select()
@@ -35,6 +37,12 @@ export async function createBooking(
       throw new Error(
         "선택하신 날짜는 이미 예약되었어요. 다른 날짜를 선택해 주세요.",
       );
+    }
+    if (error.code === "P0001") {
+      throw new Error(error.message);
+    }
+    if (error.code === "23514") {
+      throw new Error("연락처 형식이 올바르지 않아요.");
     }
     throw new Error(`예약에 실패했어요: ${error.message}`);
   }
