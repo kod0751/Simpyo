@@ -9,6 +9,7 @@ export type Booking = {
   guests_count: number;
   total_price: number;
   status: BookingStatus;
+  guest_phone: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -27,13 +28,13 @@ export type BookingWithListing = Booking & {
 
 export type HostBooking = Booking & {
   listing: {
-    id: string
-    name: string
-    images: string[]
-  }
+    id: string;
+    name: string;
+    images: string[];
+  };
   guest: {
-    id: string
-    name: string | null
-    avatar_url: string | null
-  }
-}
+    id: string;
+    name: string | null;
+    avatar_url: string | null;
+  };
+};

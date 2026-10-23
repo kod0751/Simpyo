@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, Users, CalendarX } from "lucide-react";
+import { CalendarDays, Users, CalendarX, Phone } from "lucide-react";
 import type { HostBooking } from "@/entities/booking/model/types";
 import {
   getBookingState,
   type BookingState,
 } from "@/entities/booking/lib/getBookingState";
+import { formatPhone } from "@/shared/lib/phone";
 
 interface HostBookingsListProps {
   bookings: HostBooking[];
@@ -181,6 +182,13 @@ export function HostBookingsList({ bookings }: HostBookingsListProps) {
                     <Users size={14} className="text-brand-400" />
                     게스트 {booking.guests_count}명
                   </p>
+
+                  {booking.guest_phone && state !== "cancelled" && (
+                    <a className="flex w-fit items-center gap-1.5 text-brand-700 hover:text-brand-900 hover:underline">
+                      <Phone size={14} className="text-brand-400" />
+                      {formatPhone(booking.guest_phone)}
+                    </a>
+                  )}
                 </div>
 
                 <div className="text-right sm:shrink-0">
