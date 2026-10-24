@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CalendarDays, MapPin, CalendarX } from "lucide-react";
+import { CalendarDays, MapPin, CalendarX, Phone } from "lucide-react";
 import type { BookingWithListing } from "@/entities/booking/model/types";
 import { isCancellable } from "@/entities/booking/lib/isCancellable";
 import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingButton";
 import { getBookingState } from "@/entities/booking/lib/getBookingState";
+import { formatPhone } from "@/shared/lib/phone";
 
 interface BookingsListProps {
   bookings: BookingWithListing[];
+  hostPhones?: Record<string, string>;
 }
 
 type FilterTab = "all" | "upcoming" | "completed" | "cancelled";
@@ -27,7 +29,7 @@ function formatDateRange(checkIn: string, checkOut: string) {
   return `${inDate.getMonth() + 1}월 ${inDate.getDate()}일 - ${outDate.getMonth() + 1}월 ${outDate.getDate()}일`;
 }
 
-export function BookingsList({ bookings }: BookingsListProps) {
+export function BookingsList({ bookings, hostPhones = {} }: BookingsListProps) {
   const [tab, setTab] = useState<FilterTab>("all");
 
   const withState = bookings.map((b) => ({
@@ -113,6 +115,12 @@ export function BookingsList({ bookings }: BookingsListProps) {
                   <MapPin size={14} />
                   {booking.listing.region} · {booking.listing.address}
                 </p>
+                {state === "upcoming" && hostPhones[booking.listing_id] && (
+                  <a className="flex w-fit items-center gap-1.5 text-sm text-brand-500">
+                    <Phone size={14} />
+                    호스트 {formatPhone(hostPhones[booking.listing_id])}
+                  </a>
+                )}
               </div>
 
               <div className="flex shrink-0 flex-col items-end gap-2">

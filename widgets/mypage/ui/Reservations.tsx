@@ -12,11 +12,13 @@ import { CancelBookingButton } from "@/features/manage-booking/ui/CancelBookingB
 import { isCancellable } from "@/entities/booking/lib/isCancellable";
 import { WishlistItem } from "@/entities/wishlist/model/types";
 import { ReviewableBooking } from "@/entities/review/model/types";
+import { formatPhone } from "@/shared/lib/phone";
 
 interface ReservationsProps {
   bookings?: BookingWithListing[];
   recentWishlist?: WishlistItem | null;
   reviewableBooking?: ReviewableBooking | null;
+  hostPhones?: Record<string, string>;
 }
 
 function formatStayPeriod(checkIn: string, checkOut: string) {
@@ -48,6 +50,7 @@ export function Reservations({
   bookings = [],
   recentWishlist = null,
   reviewableBooking = null,
+  hostPhones = {},
 }: ReservationsProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -151,6 +154,11 @@ export function Reservations({
                           <p className="text-sm font-bold text-brand-900">
                             {upcoming.listing.host_name} 님
                           </p>
+                          {hostPhones[upcoming.listing_id] && (
+                            <a className="mt-1 inline-block text-sm text-brand-600">
+                              {formatPhone(hostPhones[upcoming.listing_id])}
+                            </a>
+                          )}
                         </div>
                       )}
                     </div>
@@ -191,7 +199,6 @@ export function Reservations({
             </div>
           </div>
 
-          {/* TODO: 리뷰/찜 스키마 도입 전까지 하드코딩 유지 */}
           <div className="flex flex-col gap-6 lg:col-span-4">
             <div className="premium-card-outer flex-1">
               {reviewableBooking ? (

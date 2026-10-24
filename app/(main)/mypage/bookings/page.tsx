@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getMyProfile } from "@/entities/profile/api/getMyProfile";
 import { getMyBookings } from "@/entities/booking/api/getMyBookings";
 import { BookingsList } from "@/widgets/mypage/ui/BookingsList";
+import { getMyBookingHostPhones } from "@/entities/booking/api/getMyBookingHostPhones";
 
 export const metadata = {
   title: "쉼터 | 내 예약",
@@ -14,7 +15,10 @@ export default async function MyBookingsPage() {
     redirect("/");
   }
 
-  const bookings = await getMyBookings(profile.id);
+  const [bookings, hostPhones] = await Promise.all([
+    getMyBookings(profile.id),
+    getMyBookingHostPhones(),
+  ]);
 
   return (
     <main className="mx-auto max-w-4xl px-6 pt-32 pb-24">
@@ -22,7 +26,7 @@ export default async function MyBookingsPage() {
       <p className="mb-10 text-brand-500">
         지금까지의 예약 내역을 한눈에 확인하세요.
       </p>
-      <BookingsList bookings={bookings} />
+      <BookingsList bookings={bookings} hostPhones={hostPhones} />
     </main>
   );
 }
