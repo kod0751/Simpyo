@@ -10,7 +10,8 @@ import {
 
 export default function CompletePage() {
   const { form, reset } = useRegistrationStore();
-  const { mutate, isPending, isSuccess, isError, error } = useSubmitListing();
+  const { mutate, isPending, isSuccess, isError, error, variables } =
+    useSubmitListing();
   const hasSubmittedRef = useRef(false);
   const [authError, setAuthError] = useState(false);
 
@@ -68,7 +69,7 @@ export default function CompletePage() {
   }
 
   if (isSuccess) {
-    return <RegistrationSuccess title={form.title} />;
+    return <RegistrationSuccess title={variables?.form.title ?? ""} />;
   }
 
   return null;
