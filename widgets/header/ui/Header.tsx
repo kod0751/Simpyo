@@ -126,7 +126,11 @@ export function Header({ user }: HeaderProps) {
                     userId={user.id}
                     buttonClassName="relative flex h-10 w-10 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-primary"
                   />
-                  <UserDropdown user={user} />
+                  <UserDropdown
+                    user={user}
+                    variant="sheet"
+                    onNavigate={() => setMobileOpen(false)}
+                  />
                 </>
               ) : (
                 <Button onClick={open} className="w-full rounded-full">
