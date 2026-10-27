@@ -14,10 +14,7 @@ type HeaderProps = {
   user: User | null;
 };
 
-const navLinks = [
-  { label: "숙소 둘러보기", href: "/listings" },
-  { label: "체험", href: "/" },
-];
+const navLinks = [{ label: "숙소 둘러보기", href: "/listings" }];
 
 export function Header({ user }: HeaderProps) {
   const open = useAuthModal((state) => state.open);
