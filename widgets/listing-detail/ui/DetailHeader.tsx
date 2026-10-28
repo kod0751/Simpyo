@@ -1,8 +1,8 @@
-import type { Stay } from '@/entities/accommodation/model/types'
-import { Star, MapPin } from 'lucide-react'
+import type { Stay } from "@/entities/accommodation/model/types";
+import { Star, MapPin } from "lucide-react";
 
 interface DetailHeaderProps {
-  listing: Stay
+  listing: Stay;
 }
 
 export function DetailHeader({ listing }: DetailHeaderProps) {
@@ -28,15 +28,17 @@ export function DetailHeader({ listing }: DetailHeaderProps) {
       <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-brand-600">
         <div className="flex items-center gap-1">
           <Star size={16} className="fill-brand-900 text-brand-900" />
-          <span className="font-display font-bold text-brand-900">{listing.rating.toFixed(2)}</span>
+          <span className="font-display font-bold text-brand-900">
+            {listing.rating.toFixed(2)}
+          </span>
           <span>(후기 {listing.reviews}개)</span>
         </div>
         <span>·</span>
         <div className="flex items-center gap-1">
           <MapPin size={16} className="text-brand-400" />
-          <span>{listing.region} {listing.address}</span>
+          <span>{listing.address}</span>
         </div>
       </div>
     </header>
-  )
+  );
 }
