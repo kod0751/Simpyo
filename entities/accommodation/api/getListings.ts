@@ -61,6 +61,10 @@ export async function getListings({
     q = q.order("price_per_night", { ascending: true });
   } else if (sort === "price-desc") {
     q = q.order("price_per_night", { ascending: false });
+  } else if (sort === "rating") {
+    q = q
+      .order("rating", { ascending: false })
+      .order("review_count", { ascending: false });
   } else {
     q = q.order("created_at", { ascending: false });
   }
