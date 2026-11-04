@@ -7,7 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=reactquery&logoColor=white)
 
-**[배포 사이트 바로가기](https://simpyo-peach.vercel.app)**
+**[배포 사이트 바로가기](https://simpyo-peach.vercel.app)** · [변경 기록 (CHANGELOG)](./CHANGELOG.md)
 
 <p align="center">
   <img src="./public/img/home.png" width="100%" />
