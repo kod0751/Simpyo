@@ -4,12 +4,12 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를 따르고, 버전은 [유의적 버전(Semantic Versioning)](https://semver.org/lang/ko/)을 따릅니다.
 
-## [Unreleased](https://github.com/OWNER/REPO/compare/v1.0.0...HEAD)
+## [Unreleased](https://github.com/kod0751/simpyo/compare/v1.0.0...HEAD)
 
 <!-- 다음 버전에 들어갈 변경 사항을 여기에 쌓아두고, 배포할 때 버전 번호를 붙여 아래로 옮깁니다.
 분류: 추가 / 변경 / 지원 중단 예정 / 제거 / 버그 수정 / 보안 -->
 
-## [1.0.0](https://github.com/OWNER/REPO/releases/tag/v1.0.0) - 2026-10-26
+## [1.0.0](https://github.com/kod0751/simpyo/releases/tag/v1.0.0) - 2026-10-26
 
 첫 번째 배포 버전입니다.
 
