@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState } from "react";
+import { BottomSheet } from "@/shared/ui/BottomSheet";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -44,15 +44,6 @@ const MENU_GROUPS = [
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-// 서버에선 false, 브라우저에선 true
-function useIsClient() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
-}
-
 export function UserDropdown({
   user,
   variant = "dropdown",
@@ -60,7 +51,6 @@ export function UserDropdown({
 }: UserDropdownProps) {
   const router = useRouter();
   const supabase = createClient();
-  const isClient = useIsClient();
 
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
@@ -107,24 +97,6 @@ export function UserDropdown({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen, isSheet]);
-
-  // 시트: 열려 있는 동안 배경 스크롤 막기 + ESC로 닫기
-  useEffect(() => {
-    if (!isOpen || !isSheet) return;
-
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") close();
-    }
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previous;
-      document.removeEventListener("keydown", handleKeyDown);
-    };
   }, [isOpen, isSheet]);
 
   const avatarImage = (size: number) =>
@@ -201,45 +173,11 @@ export function UserDropdown({
       )}
 
       {/* 모바일: 바텀 시트 */}
-      {isSheet &&
-        isClient &&
-        createPortal(
-          <AnimatePresence>
-            {isOpen && (
-              <>
-                <motion.div
-                  key="backdrop"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={close}
-                  className="fixed inset-0 z-60 bg-brand-950/40 backdrop-blur-sm"
-                />
-                <motion.div
-                  key="sheet"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label="계정 메뉴"
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "100%" }}
-                  transition={{ type: "spring", damping: 32, stiffness: 320 }}
-                  drag="y"
-                  dragConstraints={{ top: 0, bottom: 0 }}
-                  dragElastic={{ top: 0, bottom: 0.5 }}
-                  onDragEnd={(_, info) => {
-                    if (info.offset.y > 100 || info.velocity.y > 500) close();
-                  }}
-                  className="fixed inset-x-0 bottom-0 z-61 rounded-t-3xl bg-white px-4 pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl"
-                >
-                  <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-brand-200" />
-                  {menuBody}
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>,
-          document.body,
-        )}
+      {isSheet && (
+        <BottomSheet open={isOpen} onClose={close} ariaLabel="계정 메뉴">
+          {menuBody}
+        </BottomSheet>
+      )}
     </div>
   );
 }
