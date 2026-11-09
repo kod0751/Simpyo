@@ -124,6 +124,8 @@ export function Header({ user }: HeaderProps) {
                 <>
                   <NotificationBell
                     userId={user.id}
+                    variant="sheet"
+                    onNavigate={() => setMobileOpen(false)}
                     buttonClassName="relative flex h-10 w-10 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-primary"
                   />
                   <UserDropdown
