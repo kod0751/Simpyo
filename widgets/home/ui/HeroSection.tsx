@@ -1,12 +1,13 @@
-import { Leaf, Calendar, Search, Star, Heart } from "lucide-react";
-import avatarImg from "@/public/img/avatar-1.png";
-import avatarImg2 from "@/public/img/avatar-2.png";
-import avatarImg3 from "@/public/img/avatar-3.png";
-import heroImg from "@/public/img/hero-villa.png";
+import Link from "next/link";
 import Image from "next/image";
+import { Leaf, Star, ArrowRight } from "lucide-react";
+import heroImg from "@/public/img/hero-villa.png";
 import { HeroSearch } from "@/features/listing-filter/ui/HeroSearch";
+import { getFeaturedListing } from "@/entities/accommodation/api/getFeaturedListing";
 
-export function HeroSection() {
+export async function HeroSection() {
+  const featured = await getFeaturedListing();
+
   return (
     <section className="relative flex min-h-screen items-center overflow-x-clip pt-32 pb-24">
       {/* Abstract warm background shape */}
@@ -33,67 +34,64 @@ export function HeroSection() {
             </p>
 
             <HeroSearch />
-
-            <div className="mt-10 flex items-center gap-4 text-sm text-brand-500">
-              <div className="flex -space-x-3">
-                <Image
-                  src={avatarImg}
-                  alt="여행자"
-                  className="h-10 w-10 rounded-full border-2 border-white object-cover"
-                />
-                <Image
-                  src={avatarImg2}
-                  alt="여행자"
-                  className="h-10 w-10 rounded-full border-2 border-white object-cover"
-                />
-                <Image
-                  src={avatarImg3}
-                  alt="여행자"
-                  className="h-10 w-10 rounded-full border-2 border-white object-cover"
-                />
-              </div>
-              <span className="break-keep">
-                올해{" "}
-                <span className="font-satoshi font-bold text-brand-900">
-                  47,200+
-                </span>
-                명의 여행자가 쉼터와 함께했습니다.
-              </span>
-            </div>
           </div>
 
           {/* Right visual */}
-          <div className="reveal delay-200 active relative lg:col-span-6">
+          <div className="relative lg:col-span-6">
             <div className="animate-float relative aspect-4/5 overflow-hidden rounded-[2.5rem] shadow-premium">
-              <Image
-                src={heroImg}
-                alt="프리미엄 프라이빗 풀빌라"
-                className="h-full w-full object-cover"
-              />
+              {featured?.image ? (
+                <Image
+                  src={featured.image}
+                  alt={featured.name}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              ) : (
+                <Image
+                  src={heroImg}
+                  alt="쉼터"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              )}
               <div className="absolute inset-0 bg-linear-to-t from-brand-900/80 via-brand-900/20 to-transparent" />
 
-              {/* Floating info card */}
-              <div className="absolute right-8 bottom-8 left-8 flex cursor-pointer items-center justify-between rounded-3xl border border-white/20 bg-white/10 p-5 text-white backdrop-blur-xl transition-transform hover:scale-[1.02]">
-                <div>
-                  <div className="mb-1 flex items-center gap-2">
-                    <Star
-                      size={16}
-                      className="fill-accent-500 text-accent-500"
-                    />
-                    <span className="font-satoshi font-bold">4.9</span>
-                    <span className="font-satoshi text-sm text-white/70">
-                      (1,284)
-                    </span>
+              {featured && (
+                <Link
+                  href={`/listings/${featured.id}`}
+                  className="group absolute right-8 bottom-8 left-8 flex items-center justify-between rounded-3xl border border-white/20 bg-white/10 p-5 text-white backdrop-blur-xl transition-transform hover:scale-[1.02]"
+                >
+                  <div className="min-w-0">
+                    <div className="mb-1 flex items-center gap-2">
+                      <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase">
+                        평점 1위
+                      </span>
+                      <Star
+                        size={14}
+                        className="fill-accent-500 text-accent-500"
+                      />
+                      <span className="font-satoshi font-bold">
+                        {featured.rating.toFixed(1)}
+                      </span>
+                      <span className="font-satoshi text-sm text-white/70">
+                        ({featured.review_count})
+                      </span>
+                    </div>
+                    <h3 className="truncate text-lg font-semibold break-keep">
+                      {featured.name}
+                    </h3>
+                    <p className="mt-0.5 text-sm text-white/80">
+                      {featured.address}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-semibold break-keep">
-                    스테이 고요, 프라이빗 풀빌라
-                  </h3>
-                  <p className="mt-0.5 text-sm text-white/80">제주 서귀포시</p>
-                </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-brand-900">
-                  <Heart size={22} />
-                </div>
-              </div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-brand-900 transition-transform group-hover:translate-x-1">
+                    <ArrowRight size={20} />
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
         </div>
